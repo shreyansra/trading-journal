@@ -191,3 +191,519 @@ def compute_yearly_summary(df_cat: pd.DataFrame):
 
 def compute_portfolio_summary(df: pd.DataFrame):
     """Build portfolio-wide summaries per year/category and overall."""
+    by_cat_year_cols = [
+        "Year", "Category", "Total PnL", "Trade Groups",
+        "Winning Groups", "Win Rate", "Total Legs",
+        "Long Legs", "Short Legs"
+    ]
+    by_year_cols = [
+        "Year", "Total PnL", "Trade Groups", "Winning Groups",
+        "Win Rate", "Total Legs", "Long Legs", "Short Legs"
+    ]
+
+    if df is None or df.empty:
+        return (
+            pd.DataFrame(columns=by_cat_year_cols),
+            pd.DataFrame(columns=by_year_cols),
+            {}
+        )
+
+    df_closed = df[(df["is_open"] == False) & (~df["pnl"].isna())].copy()
+    if df_closed.empty:
+        return (
+            pd.DataFrame(columns=by_cat_year_cols),
+            pd.DataFrame(columns=by_year_cols),
+            {}
+        )
+
+    df_closed["entry_date"] = pd.to_datetime(df_closed["entry_date"], errors="coerce")
+    df_closed = df_closed[~df_closed["entry_date"].isna()]
+    if df_closed.empty:
+        return (
+            pd.DataFrame(columns=by_cat_year_cols),
+            pd.DataFrame(columns=by_year_cols),
+            {}
+        )
+
+    df_closed["entry_year"] = df_closed["entry_date"].dt.year
+
+    group_summary = (
+        df_closed
+        .groupby(["entry_year", "category", "group_id"], dropna=False)
+        .agg(group_pnl=("pnl", "sum"))
+        .reset_index()
+    )
+
+    rows_by_cat_year = []
+    for (year, category), g in group_summary.groupby(["entry_year", "category"], dropna=True):
+        year_int = int(year)
+        total_pnl = g["group_pnl"].sum()
+        trade_groups = len(g)
+        winning_groups = (g["group_pnl"] > 0).sum()
+        win_rate = winning_groups / trade_groups if trade_groups else 0.0
+
+        df_legs_subset = df_closed[(df_closed["entry_year"] == year_int) & (df_closed["category"] == category)]
+        total_legs = len(df_legs_subset)
+        long_legs = (df_legs_subset["direction"] == "Long").sum()
+        short_legs = (df_legs_subset["direction"] == "Short").sum()
+
+        rows_by_cat_year.append({
+            "Year": year_int,
+            "Category": category,
+            "Total PnL": float(total_pnl),
+            "Trade Groups": int(trade_groups),
+            "Winning Groups": int(winning_groups),
+            "Win Rate": float(win_rate),
+            "Total Legs": int(total_legs),
+            "Long Legs": int(long_legs),
+            "Short Legs": int(short_legs),
+        })
+
+    if rows_by_cat_year:
+        by_cat_year_df = pd.DataFrame(rows_by_cat_year).sort_values(["Year", "Category"])
+    else:
+        by_cat_year_df = pd.DataFrame(columns=by_cat_year_cols)
+
+    rows_by_year = []
+    for year, g in group_summary.groupby("entry_year", dropna=True):
+        year_int = int(year)
+        total_pnl = g["group_pnl"].sum()
+        trade_groups = len(g)
+        winning_groups = (g["group_pnl"] > 0).sum()
+        win_rate = winning_groups / trade_groups if trade_groups else 0.0
+
+        df_legs_subset = df_closed[df_closed["entry_year"] == year_int]
+        total_legs = len(df_legs_subset)
+        long_legs = (df_legs_subset["direction"] == "Long").sum()
+        short_legs = (df_legs_subset["direction"] == "Short").sum()
+
+        rows_by_year.append({
+            "Year": year_int,
+            "Total PnL": float(total_pnl),
+            "Trade Groups": int(trade_groups),
+            "Winning Groups": int(winning_groups),
+            "Win Rate": float(win_rate),
+            "Total Legs": int(total_legs),
+            "Long Legs": int(long_legs),
+            "Short Legs": int(short_legs),
+        })
+
+    if rows_by_year:
+        by_year_df = pd.DataFrame(rows_by_year).sort_values("Year")
+    else:
+        by_year_df = pd.DataFrame(columns=by_year_cols)
+
+    total_pnl_all = group_summary["group_pnl"].sum()
+    trade_groups_all = len(group_summary)
+    winning_groups_all = (group_summary["group_pnl"] > 0).sum()
+    win_rate_all = winning_groups_all / trade_groups_all if trade_groups_all else 0.0
+
+    total_legs_all = len(df_closed)
+    long_legs_all = (df_closed["direction"] == "Long").sum()
+    short_legs_all = (df_closed["direction"] == "Short").sum()
+
+    overall = {
+        "Total PnL": float(total_pnl_all),
+        "Trade Groups": int(trade_groups_all),
+        "Winning Groups": int(winning_groups_all),
+        "Win Rate": float(win_rate_all),
+        "Total Legs": int(total_legs_all),
+        "Long Legs": int(long_legs_all),
+        "Short Legs": int(short_legs_all),
+    }
+
+    return by_cat_year_df, by_year_df, overall
+
+
+def _sorted_for_display(df: pd.DataFrame) -> pd.DataFrame:
+    """Sort so that within each group, Core legs appear first, then others."""
+    if df.empty:
+        return df
+
+    df = df.copy()
+    role_order_map = {"Core": 0, "Hedge": 1, "Adjustment": 2}
+    df["__role_order"] = df["leg_role"].map(role_order_map).fillna(9)
+    df["__group_order"] = df["group_id"].fillna(1e9)
+
+    df = df.sort_values(["__group_order", "__role_order", "id"])
+    return df.drop(columns=["__role_order", "__group_order"])
+
+
+def display_trades_table(df: pd.DataFrame):
+    if df.empty:
+        st.write("No trades.")
+        return
+
+    df_disp = _sorted_for_display(df)
+
+    display_cols = [
+        "id",
+        "group_id",
+        "category",
+        "asset_type",
+        "ticker",
+        "option_type",
+        "strike",
+        "expiry",
+        "contracts_or_shares",
+        "direction",
+        "leg_role",
+        "entry_date",
+        "entry_underlying_px",
+        "option_entry_price",
+        "exit_date",
+        "exit_underlying_px",
+        "option_exit_price",
+        "pnl",
+        "comments",
+        "is_open",
+    ]
+    existing = [c for c in display_cols if c in df_disp.columns]
+    st.dataframe(df_disp[existing], use_container_width=True, height=280)
+
+
+def render_year_journal(category_name: str, year: int, df: pd.DataFrame):
+    st.markdown(f"### {category_name} – {year}")
+
+    df_cat = df[df["category"] == category_name].copy()
+    if not df_cat.empty:
+        df_cat["entry_date"] = pd.to_datetime(df_cat["entry_date"], errors="coerce")
+        df_year = df_cat[df_cat["entry_date"].dt.year == year].copy()
+    else:
+        df_year = pd.DataFrame(columns=df.columns)
+
+    # ---------- New leg / trade ----------
+    st.markdown("#### New Leg / Trade")
+
+    with st.form(f"new_trade_form_{category_name}_{year}"):
+        c1, c2, c3 = st.columns([1.1, 1.1, 1.2])
+
+        with c1:
+            group_mode = st.radio(
+                "Link this leg to",
+                ["New core trade", "Existing trade group"],
+                key=f"group_mode_{category_name}_{year}",
+                horizontal=True,
+            )
+
+            asset_type = st.selectbox(
+                "Asset type",
+                ["Option", "Stock"],
+                key=f"asset_type_{category_name}_{year}",
+            )
+            ticker = st.text_input(
+                "Ticker",
+                value="AAPL",
+                key=f"ticker_{category_name}_{year}",
+            ).upper().strip()
+            direction = st.selectbox(
+                "Direction",
+                ["Long", "Short"],
+                key=f"direction_{category_name}_{year}",
+            )
+
+        with c2:
+            if asset_type == "Option":
+                option_type = st.selectbox(
+                    "Option type",
+                    ["Call", "Put"],
+                    key=f"option_type_{category_name}_{year}",
+                )
+                strike = st.number_input(
+                    "Strike",
+                    min_value=0.0,
+                    format="%.2f",
+                    key=f"strike_{category_name}_{year}",
+                )
+                qty = st.number_input(
+                    "Contracts",
+                    min_value=1,
+                    step=1,
+                    key=f"contracts_{category_name}_{year}",
+                )
+            else:
+                option_type = None
+                strike = None
+                qty = st.number_input(
+                    "Shares",
+                    min_value=1,
+                    step=1,
+                    key=f"shares_{category_name}_{year}",
+                )
+
+            expiries = get_next_fridays()
+            expiry = st.selectbox(
+                "Expiry (options)",
+                expiries,
+                format_func=lambda d: d.strftime("%Y-%m-%d"),
+                key=f"expiry_{category_name}_{year}",
+            )
+
+            entry_date = st.date_input(
+                "Entry date",
+                value=dt.date.today(),
+                key=f"entry_date_{category_name}_{year}",
+            )
+
+        with c3:
+            selected_group_id = None
+            if group_mode == "Existing trade group":
+                df_groups = df_cat.dropna(subset=["group_id"])
+                if not df_groups.empty:
+                    unique_groups = (
+                        df_groups.sort_values(["group_id", "entry_date"])
+                        .groupby("group_id")
+                        .first()
+                        .reset_index()
+                    )
+                    group_options = [
+                        f'{int(row["group_id"])} | {row["ticker"]} | {row["asset_type"]}'
+                        for _, row in unique_groups.iterrows()
+                    ]
+                    selected_group_label = st.selectbox(
+                        "Existing trade group",
+                        options=group_options,
+                        key=f"existing_group_{category_name}_{year}",
+                    )
+                    selected_group_id = int(selected_group_label.split(" | ")[0])
+                else:
+                    st.info("No existing trade groups yet in this category.")
+
+            leg_role_default = "Core" if group_mode == "New core trade" else "Hedge"
+            leg_role = st.selectbox(
+                "Leg role",
+                ["Core", "Hedge", "Adjustment"],
+                index=["Core", "Hedge", "Adjustment"].index(leg_role_default),
+                key=f"leg_role_{category_name}_{year}",
+            )
+
+            if asset_type == "Option":
+                option_entry_price = st.number_input(
+                    "Option entry price (premium per share)",
+                    min_value=0.0,
+                    format="%.4f",
+                    key=f"option_entry_price_{category_name}_{year}",
+                )
+            else:
+                option_entry_price = 0.0
+
+        comments = st.text_area(
+            "Comments / thesis",
+            value="",
+            height=60,
+            key=f"comments_{category_name}_{year}",
+        )
+
+        submitted = st.form_submit_button("Add leg")
+
+        if submitted:
+            if ticker == "":
+                st.warning("Ticker is required.")
+            else:
+                df_all = load_data()
+
+                if not df_all["id"].dropna().empty:
+                    next_id = int(df_all["id"].dropna().max()) + 1
+                else:
+                    next_id = 1
+
+                if group_mode == "Existing trade group" and selected_group_id is not None:
+                    group_id = int(selected_group_id)
+                else:
+                    max_group = df_all["group_id"].dropna()
+                    group_id = int(max_group.max()) + 1 if not max_group.empty else 1
+
+                entry_underlying_px = fetch_underlying_price(ticker)
+
+                new_row = {
+                    "id": int(next_id),
+                    "group_id": int(group_id),
+                    "category": category_name,
+                    "asset_type": asset_type,
+                    "ticker": ticker,
+                    "option_type": option_type,
+                    "strike": strike,
+                    "expiry": expiry if asset_type == "Option" else None,
+                    "contracts_or_shares": qty,
+                    "direction": direction,
+                    "leg_role": leg_role,
+                    "entry_date": entry_date,
+                    "entry_underlying_px": entry_underlying_px,
+                    "option_entry_price": option_entry_price if asset_type == "Option" and option_entry_price != 0 else None,
+                    "exit_date": pd.NaT,
+                    "exit_underlying_px": None,
+                    "option_exit_price": None,
+                    "pnl": None,
+                    "comments": comments,
+                    "is_open": True,
+                }
+
+                df_all = pd.concat([df_all, pd.DataFrame([new_row])], ignore_index=True)
+                save_data(df_all)
+                st.success(
+                    f"Leg #{next_id} added to trade group {group_id}. "
+                    f"(Entry underlying: {entry_underlying_px:.2f} if available)"
+                    if entry_underlying_px is not None
+                    else f"Leg #{next_id} added to trade group {group_id}."
+                )
+
+    # ---------- Journal View (this year) ----------
+    st.markdown("#### Journal View (this year)")
+
+    if not df_year.empty:
+        open_year = df_year[df_year["is_open"] == True]
+        closed_year = df_year[df_year["is_open"] == False]
+    else:
+        open_year = pd.DataFrame(columns=df.columns)
+        closed_year = pd.DataFrame(columns=df.columns)
+
+    tab_open, tab_closed, tab_all = st.tabs(["Open legs", "Closed legs", "All legs"])
+
+    with tab_open:
+        st.caption("Open legs for this category and year. Core legs appear at the top of each group.")
+        display_trades_table(open_year)
+
+        st.markdown("##### Close / edit a leg")
+
+        if open_year.empty:
+            st.info("No open legs in this year.")
+        else:
+            with st.form(f"close_leg_form_{category_name}_{year}"):
+                df_open_sorted = _sorted_for_display(open_year)
+                leg_labels = (
+                    df_open_sorted["id"].astype(str)
+                    + " | G"
+                    + df_open_sorted["group_id"].fillna(0).astype(float).astype(int).astype(str)
+                    + " | "
+                    + df_open_sorted["asset_type"]
+                    + " | "
+                    + df_open_sorted["ticker"]
+                    + " | "
+                    + df_open_sorted["leg_role"]
+                )
+                selected_label = st.selectbox(
+                    "Select leg to close",
+                    options=leg_labels,
+                    key=f"close_select_{category_name}_{year}",
+                )
+                selected_id = int(selected_label.split(" | ")[0])
+                leg_row = df_open_sorted[df_open_sorted["id"] == selected_id].iloc[0]
+
+                col1, col2 = st.columns(2)
+                with col1:
+                    exit_date = st.date_input(
+                        "Closing date",
+                        value=dt.date.today(),
+                        key=f"exit_date_{category_name}_{year}",
+                    )
+
+                auto_underlying = fetch_underlying_price(leg_row["ticker"])
+                if auto_underlying is not None:
+                    st.caption(f"Auto-fetched underlying at close: {auto_underlying:.2f}")
+                else:
+                    st.caption("Underlying price at close could not be fetched.")
+
+                with col2:
+                    if leg_row["asset_type"] == "Stock":
+                        close_price = st.number_input(
+                            "Closing price (stock)",
+                            value=float(auto_underlying) if auto_underlying is not None else 0.0,
+                            format="%.4f",
+                            key=f"close_price_stock_{category_name}_{year}",
+                        )
+                        option_exit_price = None
+                        exit_underlying_px = close_price
+                    else:
+                        close_price = st.number_input(
+                            "Closing price (option premium per share)",
+                            min_value=0.0,
+                            format="%.4f",
+                            key=f"close_price_opt_{category_name}_{year}",
+                        )
+                        option_exit_price = close_price
+                        exit_underlying_px = auto_underlying
+
+                updated_comments = st.text_area(
+                    "Update comments / closing notes (optional)",
+                    value=str(leg_row.get("comments") or ""),
+                    height=60,
+                    key=f"comments_close_{category_name}_{year}",
+                )
+
+                do_close = st.form_submit_button("Close selected leg")
+
+                if do_close:
+                    df_all = load_data()
+                    idx_list = df_all.index[df_all["id"] == selected_id].tolist()
+                    if not idx_list:
+                        st.error("Could not find this leg in the data anymore.")
+                    else:
+                        idx = idx_list[0]
+                        df_all.at[idx, "exit_date"] = exit_date
+                        df_all.at[idx, "exit_underlying_px"] = exit_underlying_px
+                        df_all.at[idx, "option_exit_price"] = option_exit_price
+                        df_all.at[idx, "is_open"] = False
+                        df_all.at[idx, "comments"] = updated_comments
+                        df_all.at[idx, "pnl"] = calculate_pnl(df_all.loc[idx])
+
+                        save_data(df_all)
+                        pnl_val = df_all.at[idx, "pnl"]
+                        if pnl_val is not None:
+                            st.success(f"Leg #{selected_id} closed. PnL: {pnl_val:.2f}")
+                        else:
+                            st.success("Leg closed, but PnL could not be calculated (missing prices).")
+
+    with tab_closed:
+        st.caption("Closed legs (this year).")
+        display_trades_table(closed_year)
+
+    with tab_all:
+        st.caption("All legs (open & closed) for this year.")
+        display_trades_table(df_year)
+
+
+def render_category_page(category_name: str):
+    st.title(category_name)
+
+    df = load_data()
+    df_cat = df[df["category"] == category_name].copy()
+
+    if df_cat.empty or df_cat["entry_date"].dropna().empty:
+        years = [dt.date.today().year]
+    else:
+        df_cat["entry_date"] = pd.to_datetime(df_cat["entry_date"], errors="coerce")
+        df_cat = df_cat[~df_cat["entry_date"].isna()]
+        if df_cat.empty:
+            years = [dt.date.today().year]
+        else:
+            years = sorted(df_cat["entry_date"].dt.year.unique().tolist())
+
+    tabs = st.tabs([str(y) for y in years] + ["Summary"])
+
+    for i, year in enumerate(years):
+        with tabs[i]:
+            render_year_journal(category_name, year, df)
+
+    with tabs[-1]:
+        st.subheader("Summary (all years)")
+        df = load_data()
+        df_cat = df[df["category"] == category_name].copy()
+        yearly_summary, overall = compute_yearly_summary(df_cat)
+
+        if yearly_summary.empty:
+            st.info("No closed trades with PnL yet for this category.")
+        else:
+            st.write("Yearly metrics (based on trade groups):")
+            st.dataframe(yearly_summary, use_container_width=True)
+
+            if overall:
+                st.markdown("#### Overall")
+                colA, colB, colC, colD = st.columns(4)
+                colA.metric("Total PnL", f"{overall['Total PnL']:.2f}")
+                colB.metric("Trade groups", f"{overall['Trade Groups']}")
+                colC.metric("Win rate", f"{overall['Win Rate'] * 100:.1f}%")
+                colD.metric("Total legs", f"{overall['Total Legs']}")
+                st.caption(
+                    "Win rate is computed at the trade-group level (grouped by group_id); "
+                    "long/short counts are at the leg level."
+                )
