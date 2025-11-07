@@ -126,7 +126,7 @@ def compute_yearly_summary(df_cat: pd.DataFrame):
             "Total Legs", "Long Legs", "Short Legs"
         ]), None
 
-    df_closed["entry_date"] = pd.to_datetime(df_closed["entry_date"])
+    df_closed["entry_date"] = pd.to_datetime(df_closed["entry_date"], errors="coerce")
     df_closed["entry_year"] = df_closed["entry_date"].dt.year
 
     # group-level PnL
@@ -218,7 +218,7 @@ def compute_portfolio_summary(df: pd.DataFrame):
             {}
         )
 
-    df_closed["entry_date"] = pd.to_datetime(df_closed["entry_date"])
+    df_closed["entry_date"] = pd.to_datetime(df_closed["entry_date"], errors="coerce")
     df_closed["entry_year"] = df_closed["entry_date"].dt.year
 
     # group-level
@@ -342,7 +342,7 @@ def render_year_journal(category_name: str, year: int, df: pd.DataFrame):
     # Filter for this category & year for display
     df_cat = df[df["category"] == category_name].copy()
     if not df_cat.empty:
-        df_cat["entry_date"] = pd.to_datetime(df_cat["entry_date"])
+        df_cat["entry_date"] = pd.to_datetime(df_cat["entry_date"], errors="coerce")
         df_cat["entry_year"] = df_cat["entry_date"].dt.year
         df_year = df_cat[df_cat["entry_year"] == year].copy()
     else:
@@ -630,7 +630,7 @@ def render_category_page(category_name: str):
     if df_cat.empty or df_cat["entry_date"].dropna().empty:
         years = [dt.date.today().year]
     else:
-        df_cat["entry_date"] = pd.to_datetime(df_cat["entry_date"])
+        df_cat["entry_date"] = pd.to_datetime(df_cat["entry_date"], errors="coerce")
         years = sorted(df_cat["entry_date"].dropna().dt.year.unique().tolist())
 
     # One tab per year + a Summary tab
