@@ -110,26 +110,35 @@ def calculate_pnl(row):
 def compute_yearly_summary(df_cat: pd.DataFrame):
     """
     Compute summary metrics per year and overall for a given category subset.
-    Returns (yearly_df, overall_row_dict)
+    Returns (yearly_df, overall_row_dict).
+
+    Handles cases where entry_date is missing/invalid by skipping those rows
+    gracefully instead of throwing errors.
     """
-    if df_cat.empty:
-        return pd.DataFrame(columns=[
-            "Year", "Total PnL", "Trade Groups", "Winning Groups", "Win Rate",
-            "Total Legs", "Long Legs", "Short Legs"
-        ]), None
+    cols = [
+        "Year", "Total PnL", "Trade Groups", "Winning Groups", "Win Rate",
+        "Total Legs", "Long Legs", "Short Legs"
+    ]
+
+    # No trades in this category at all
+    if df_cat is None or df_cat.empty:
+        return pd.DataFrame(columns=cols), None
 
     # Only closed legs with a PnL
     df_closed = df_cat[(df_cat["is_open"] == False) & (~df_cat["pnl"].isna())].copy()
     if df_closed.empty:
-        return pd.DataFrame(columns=[
-            "Year", "Total PnL", "Trade Groups", "Winning Groups", "Win Rate",
-            "Total Legs", "Long Legs", "Short Legs"
-        ]), None
+        return pd.DataFrame(columns=cols), None
 
+    # Parse dates safely, drop rows where entry_date is invalid
     df_closed["entry_date"] = pd.to_datetime(df_closed["entry_date"], errors="coerce")
+    df_closed = df_closed[~df_closed["entry_date"].isna()]
+    if df_closed.empty:
+        # Nothing with a valid date to summarize
+        return pd.DataFrame(columns=cols), None
+
     df_closed["entry_year"] = df_closed["entry_date"].dt.year
 
-    # group-level PnL
+    # group-level PnL (per year + group_id)
     group_summary = (
         df_closed
         .groupby(["entry_year", "group_id"], dropna=False)
@@ -139,19 +148,21 @@ def compute_yearly_summary(df_cat: pd.DataFrame):
 
     metrics_rows = []
 
-    for year, year_groups in group_summary.groupby("entry_year"):
+    # Year-by-year metrics (trade-group level)
+    for year, year_groups in group_summary.groupby("entry_year", dropna=True):
+        year_int = int(year)
         total_pnl = year_groups["group_pnl"].sum()
         trade_groups = len(year_groups)
         winning_groups = (year_groups["group_pnl"] > 0).sum()
         win_rate = winning_groups / trade_groups if trade_groups else 0.0
 
-        df_year_legs = df_closed[df_closed["entry_year"] == year]
+        df_year_legs = df_closed[df_closed["entry_year"] == year_int]
         total_legs = len(df_year_legs)
         long_legs = (df_year_legs["direction"] == "Long").sum()
         short_legs = (df_year_legs["direction"] == "Short").sum()
 
         metrics_rows.append({
-            "Year": int(year),
+            "Year": year_int,
             "Total PnL": float(total_pnl),
             "Trade Groups": int(trade_groups),
             "Winning Groups": int(winning_groups),
@@ -161,9 +172,13 @@ def compute_yearly_summary(df_cat: pd.DataFrame):
             "Short Legs": int(short_legs),
         })
 
-    yearly_df = pd.DataFrame(metrics_rows).sort_values("Year")
+    # If, for some reason, we still have no rows, return an empty DF instead of crashing
+    if metrics_rows:
+        yearly_df = pd.DataFrame(metrics_rows).sort_values("Year")
+    else:
+        yearly_df = pd.DataFrame(columns=cols)
 
-    # Overall metrics
+    # Overall metrics across all years (still group-level)
     total_pnl_all = group_summary["group_pnl"].sum()
     trade_groups_all = len(group_summary)
     winning_groups_all = (group_summary["group_pnl"] > 0).sum()
@@ -186,42 +201,54 @@ def compute_yearly_summary(df_cat: pd.DataFrame):
     return yearly_df, overall
 
 
+
 def compute_portfolio_summary(df: pd.DataFrame):
     """
     Build portfolio-wide summaries:
     - per year & category
     - per year overall
     - overall totals
+
+    Handles invalid/missing dates gracefully.
     """
-    if df.empty:
-        empty_cols = [
-            "Year", "Category", "Total PnL", "Trade Groups",
-            "Winning Groups", "Win Rate", "Total Legs",
-            "Long Legs", "Short Legs"
-        ]
+    by_cat_year_cols = [
+        "Year", "Category", "Total PnL", "Trade Groups",
+        "Winning Groups", "Win Rate", "Total Legs",
+        "Long Legs", "Short Legs"
+    ]
+    by_year_cols = [
+        "Year", "Total PnL", "Trade Groups", "Winning Groups",
+        "Win Rate", "Total Legs", "Long Legs", "Short Legs"
+    ]
+
+    if df is None or df.empty:
         return (
-            pd.DataFrame(columns=empty_cols),
-            pd.DataFrame(columns=empty_cols[:-1]),  # no Category col for overall per year
+            pd.DataFrame(columns=by_cat_year_cols),
+            pd.DataFrame(columns=by_year_cols),
             {}
         )
 
     df_closed = df[(df["is_open"] == False) & (~df["pnl"].isna())].copy()
     if df_closed.empty:
-        empty_cols = [
-            "Year", "Category", "Total PnL", "Trade Groups",
-            "Winning Groups", "Win Rate", "Total Legs",
-            "Long Legs", "Short Legs"
-        ]
         return (
-            pd.DataFrame(columns=empty_cols),
-            pd.DataFrame(columns=empty_cols[:-1]),
+            pd.DataFrame(columns=by_cat_year_cols),
+            pd.DataFrame(columns=by_year_cols),
             {}
         )
 
+    # Parse dates safely, drop invalid ones
     df_closed["entry_date"] = pd.to_datetime(df_closed["entry_date"], errors="coerce")
+    df_closed = df_closed[~df_closed["entry_date"].isna()]
+    if df_closed.empty:
+        return (
+            pd.DataFrame(columns=by_cat_year_cols),
+            pd.DataFrame(columns=by_year_cols),
+            {}
+        )
+
     df_closed["entry_year"] = df_closed["entry_date"].dt.year
 
-    # group-level
+    # group-level summary: year + category + group
     group_summary = (
         df_closed
         .groupby(["entry_year", "category", "group_id"], dropna=False)
@@ -229,21 +256,22 @@ def compute_portfolio_summary(df: pd.DataFrame):
         .reset_index()
     )
 
-    # Per year & category
+    # ---------- Per year & category ----------
     rows_by_cat_year = []
-    for (year, category), g in group_summary.groupby(["entry_year", "category"]):
+    for (year, category), g in group_summary.groupby(["entry_year", "category"], dropna=True):
+        year_int = int(year)
         total_pnl = g["group_pnl"].sum()
         trade_groups = len(g)
         winning_groups = (g["group_pnl"] > 0).sum()
         win_rate = winning_groups / trade_groups if trade_groups else 0.0
 
-        df_legs_subset = df_closed[(df_closed["entry_year"] == year) & (df_closed["category"] == category)]
+        df_legs_subset = df_closed[(df_closed["entry_year"] == year_int) & (df_closed["category"] == category)]
         total_legs = len(df_legs_subset)
         long_legs = (df_legs_subset["direction"] == "Long").sum()
         short_legs = (df_legs_subset["direction"] == "Short").sum()
 
         rows_by_cat_year.append({
-            "Year": int(year),
+            "Year": year_int,
             "Category": category,
             "Total PnL": float(total_pnl),
             "Trade Groups": int(trade_groups),
@@ -254,23 +282,27 @@ def compute_portfolio_summary(df: pd.DataFrame):
             "Short Legs": int(short_legs),
         })
 
-    by_cat_year_df = pd.DataFrame(rows_by_cat_year).sort_values(["Year", "Category"])
+    if rows_by_cat_year:
+        by_cat_year_df = pd.DataFrame(rows_by_cat_year).sort_values(["Year", "Category"])
+    else:
+        by_cat_year_df = pd.DataFrame(columns=by_cat_year_cols)
 
-    # Per year overall
+    # ---------- Per year (all categories combined) ----------
     rows_by_year = []
-    for year, g in group_summary.groupby("entry_year"):
+    for year, g in group_summary.groupby("entry_year", dropna=True):
+        year_int = int(year)
         total_pnl = g["group_pnl"].sum()
         trade_groups = len(g)
         winning_groups = (g["group_pnl"] > 0).sum()
         win_rate = winning_groups / trade_groups if trade_groups else 0.0
 
-        df_legs_subset = df_closed[df_closed["entry_year"] == year]
+        df_legs_subset = df_closed[df_closed["entry_year"] == year_int]
         total_legs = len(df_legs_subset)
         long_legs = (df_legs_subset["direction"] == "Long").sum()
         short_legs = (df_legs_subset["direction"] == "Short").sum()
 
         rows_by_year.append({
-            "Year": int(year),
+            "Year": year_int,
             "Total PnL": float(total_pnl),
             "Trade Groups": int(trade_groups),
             "Winning Groups": int(winning_groups),
@@ -280,9 +312,12 @@ def compute_portfolio_summary(df: pd.DataFrame):
             "Short Legs": int(short_legs),
         })
 
-    by_year_df = pd.DataFrame(rows_by_year).sort_values("Year")
+    if rows_by_year:
+        by_year_df = pd.DataFrame(rows_by_year).sort_values("Year")
+    else:
+        by_year_df = pd.DataFrame(columns=by_year_cols)
 
-    # Overall totals
+    # ---------- Overall portfolio metrics ----------
     total_pnl_all = group_summary["group_pnl"].sum()
     trade_groups_all = len(group_summary)
     winning_groups_all = (group_summary["group_pnl"] > 0).sum()
@@ -303,6 +338,7 @@ def compute_portfolio_summary(df: pd.DataFrame):
     }
 
     return by_cat_year_df, by_year_df, overall
+
 
 
 def display_trades_table(df: pd.DataFrame):
