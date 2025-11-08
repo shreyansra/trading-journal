@@ -365,6 +365,7 @@ def display_trades_table(df: pd.DataFrame):
 def render_year_journal(category_name: str, year: int, df: pd.DataFrame):
     st.markdown(f"### {category_name} – {year}")
 
+    # Filter data for this category & year
     df_cat = df[df["category"] == category_name].copy()
     if not df_cat.empty:
         df_cat["entry_date"] = pd.to_datetime(df_cat["entry_date"], errors="coerce")
@@ -448,7 +449,10 @@ def render_year_journal(category_name: str, year: int, df: pd.DataFrame):
         with c3:
             selected_group_id = None
             if group_mode == "Existing trade group":
-                df_groups = df_cat.dropna(subset=["group_id"])
+                # Use all data for this category (not just this year) to list groups
+                df_all_for_groups = load_data()
+                df_groups = df_all_for_groups[df_all_for_groups["category"] == category_name]
+                df_groups = df_groups.dropna(subset=["group_id"])
                 if not df_groups.empty:
                     unique_groups = (
                         df_groups.sort_values(["group_id", "entry_date"])
@@ -540,12 +544,13 @@ def render_year_journal(category_name: str, year: int, df: pd.DataFrame):
 
                 df_all = pd.concat([df_all, pd.DataFrame([new_row])], ignore_index=True)
                 save_data(df_all)
-                st.success(
-                    f"Leg #{next_id} added to trade group {group_id}. "
-                    f"(Entry underlying: {entry_underlying_px:.2f} if available)"
-                    if entry_underlying_px is not None
-                    else f"Leg #{next_id} added to trade group {group_id}."
-                )
+                if entry_underlying_px is not None:
+                    st.success(
+                        f"Leg #{next_id} added to trade group {group_id}. "
+                        f"(Entry underlying: {entry_underlying_px:.2f})"
+                    )
+                else:
+                    st.success(f"Leg #{next_id} added to trade group {group_id}.")
 
     # ---------- Journal View (this year) ----------
     st.markdown("#### Journal View (this year)")
@@ -559,104 +564,143 @@ def render_year_journal(category_name: str, year: int, df: pd.DataFrame):
 
     tab_open, tab_closed, tab_all = st.tabs(["Open legs", "Closed legs", "All legs"])
 
+    # --- Open legs tab with row-level close/edit buttons ---
     with tab_open:
         st.caption("Open legs for this category and year. Core legs appear at the top of each group.")
-        display_trades_table(open_year)
+        df_open_sorted = _sorted_for_display(open_year)
 
-        st.markdown("##### Close / edit a leg")
-
-        if open_year.empty:
+        if df_open_sorted.empty:
             st.info("No open legs in this year.")
         else:
-            with st.form(f"close_leg_form_{category_name}_{year}"):
-                df_open_sorted = _sorted_for_display(open_year)
-                leg_labels = (
-                    df_open_sorted["id"].astype(str)
-                    + " | G"
-                    + df_open_sorted["group_id"].fillna(0).astype(float).astype(int).astype(str)
-                    + " | "
-                    + df_open_sorted["asset_type"]
-                    + " | "
-                    + df_open_sorted["ticker"]
-                    + " | "
-                    + df_open_sorted["leg_role"]
-                )
-                selected_label = st.selectbox(
-                    "Select leg to close",
-                    options=leg_labels,
-                    key=f"close_select_{category_name}_{year}",
-                )
-                selected_id = int(selected_label.split(" | ")[0])
-                leg_row = df_open_sorted[df_open_sorted["id"] == selected_id].iloc[0]
+            st.write(f"**{len(df_open_sorted)} open legs**")
+            # Render a compact row for each leg with a Close/Edit button
+            for _, row in df_open_sorted.iterrows():
+                cols = st.columns([0.9, 0.8, 1.1, 0.9, 0.9, 1.0, 1.0])
+                leg_id = int(row["id"])
+                group_id = int(row["group_id"]) if not pd.isna(row["group_id"]) else None
 
-                col1, col2 = st.columns(2)
-                with col1:
-                    exit_date = st.date_input(
-                        "Closing date",
-                        value=dt.date.today(),
-                        key=f"exit_date_{category_name}_{year}",
-                    )
+                with cols[0]:
+                    if st.button("Close / edit", key=f"btn_close_{category_name}_{year}_{leg_id}"):
+                        st.session_state["editing_leg_id"] = leg_id
+                        st.session_state["editing_category"] = category_name
+                        st.session_state["editing_year"] = year
 
-                auto_underlying = fetch_underlying_price(leg_row["ticker"])
-                if auto_underlying is not None:
-                    st.caption(f"Auto-fetched underlying at close: {auto_underlying:.2f}")
+                with cols[1]:
+                    st.write(f"**G{group_id}**" if group_id is not None else "-")
+
+                with cols[2]:
+                    atype = row["asset_type"]
+                    otype = row.get("option_type") or ""
+                    st.write(f"{atype} {otype}".strip())
+
+                with cols[3]:
+                    st.write(f"{row['ticker']}")
+
+                with cols[4]:
+                    st.write(f"{row['leg_role']}")
+
+                with cols[5]:
+                    if pd.notna(row["entry_date"]):
+                        st.write(f"Entry: {row['entry_date'].date()}")
+                    else:
+                        st.write("Entry: -")
+
+                with cols[6]:
+                    st.write(f"Qty: {row['contracts_or_shares']}")
+
+            # "Popup" editor below the table if a leg is in editing state
+            editing_id = st.session_state.get("editing_leg_id")
+            editing_cat = st.session_state.get("editing_category")
+            editing_year = st.session_state.get("editing_year")
+
+            if editing_id is not None and editing_cat == category_name and editing_year == year:
+                st.markdown("---")
+                st.markdown(f"##### Close / edit leg #{editing_id}")
+
+                # Reload from disk to avoid stale data
+                df_all = load_data()
+                match = df_all[df_all["id"] == editing_id]
+                if match.empty:
+                    st.warning("This leg no longer exists in the data.")
                 else:
-                    st.caption("Underlying price at close could not be fetched.")
+                    leg_row = match.iloc[0]
 
-                with col2:
-                    if leg_row["asset_type"] == "Stock":
-                        close_price = st.number_input(
-                            "Closing price (stock)",
-                            value=float(auto_underlying) if auto_underlying is not None else 0.0,
-                            format="%.4f",
-                            key=f"close_price_stock_{category_name}_{year}",
-                        )
-                        option_exit_price = None
-                        exit_underlying_px = close_price
-                    else:
-                        close_price = st.number_input(
-                            "Closing price (option premium per share)",
-                            min_value=0.0,
-                            format="%.4f",
-                            key=f"close_price_opt_{category_name}_{year}",
-                        )
-                        option_exit_price = close_price
-                        exit_underlying_px = auto_underlying
+                    with st.form(f"edit_leg_form_{category_name}_{year}_{editing_id}"):
+                        col1, col2 = st.columns(2)
 
-                updated_comments = st.text_area(
-                    "Update comments / closing notes (optional)",
-                    value=str(leg_row.get("comments") or ""),
-                    height=60,
-                    key=f"comments_close_{category_name}_{year}",
-                )
+                        with col1:
+                            exit_date = st.date_input(
+                                "Closing date",
+                                value=dt.date.today(),
+                                key=f"exit_date_{category_name}_{year}_{editing_id}",
+                            )
 
-                do_close = st.form_submit_button("Close selected leg")
-
-                if do_close:
-                    df_all = load_data()
-                    idx_list = df_all.index[df_all["id"] == selected_id].tolist()
-                    if not idx_list:
-                        st.error("Could not find this leg in the data anymore.")
-                    else:
-                        idx = idx_list[0]
-                        df_all.at[idx, "exit_date"] = exit_date
-                        df_all.at[idx, "exit_underlying_px"] = exit_underlying_px
-                        df_all.at[idx, "option_exit_price"] = option_exit_price
-                        df_all.at[idx, "is_open"] = False
-                        df_all.at[idx, "comments"] = updated_comments
-                        df_all.at[idx, "pnl"] = calculate_pnl(df_all.loc[idx])
-
-                        save_data(df_all)
-                        pnl_val = df_all.at[idx, "pnl"]
-                        if pnl_val is not None:
-                            st.success(f"Leg #{selected_id} closed. PnL: {pnl_val:.2f}")
+                        auto_underlying = fetch_underlying_price(leg_row["ticker"])
+                        if auto_underlying is not None:
+                            st.caption(f"Auto-fetched underlying at close: {auto_underlying:.2f}")
                         else:
-                            st.success("Leg closed, but PnL could not be calculated (missing prices).")
+                            st.caption("Underlying price at close could not be fetched.")
 
+                        with col2:
+                            if leg_row["asset_type"] == "Stock":
+                                close_price = st.number_input(
+                                    "Closing price (stock)",
+                                    value=float(auto_underlying) if auto_underlying is not None else 0.0,
+                                    format="%.4f",
+                                    key=f"close_price_stock_{category_name}_{year}_{editing_id}",
+                                )
+                                option_exit_price = None
+                                exit_underlying_px = close_price
+                            else:
+                                close_price = st.number_input(
+                                    "Closing price (option premium per share)",
+                                    min_value=0.0,
+                                    format="%.4f",
+                                    key=f"close_price_opt_{category_name}_{year}_{editing_id}",
+                                )
+                                option_exit_price = close_price
+                                exit_underlying_px = auto_underlying
+
+                        updated_comments = st.text_area(
+                            "Update comments / closing notes (optional)",
+                            value=str(leg_row.get("comments") or ""),
+                            height=60,
+                            key=f"comments_close_{category_name}_{year}_{editing_id}",
+                        )
+
+                        submit_close = st.form_submit_button("Save & close leg")
+
+                        if submit_close:
+                            idx_list = df_all.index[df_all["id"] == editing_id].tolist()
+                            if not idx_list:
+                                st.error("Could not find this leg in the data anymore.")
+                            else:
+                                idx = idx_list[0]
+                                df_all.at[idx, "exit_date"] = exit_date
+                                df_all.at[idx, "exit_underlying_px"] = exit_underlying_px
+                                df_all.at[idx, "option_exit_price"] = option_exit_price
+                                df_all.at[idx, "is_open"] = False
+                                df_all.at[idx, "comments"] = updated_comments
+                                df_all.at[idx, "pnl"] = calculate_pnl(df_all.loc[idx])
+
+                                save_data(df_all)
+                                pnl_val = df_all.at[idx, "pnl"]
+                                if pnl_val is not None:
+                                    st.success(f"Leg #{editing_id} closed. PnL: {pnl_val:.2f}")
+                                else:
+                                    st.success("Leg closed, but PnL could not be calculated (missing prices).")
+
+                                # Clear editing state so popup disappears on rerun
+                                st.session_state["editing_leg_id"] = None
+                                st.session_state["editing_category"] = None
+                                st.session_state["editing_year"] = None
+
+    # --- Closed legs tab ---
     with tab_closed:
         st.caption("Closed legs (this year).")
         display_trades_table(closed_year)
 
+    # --- All legs tab ---
     with tab_all:
         st.caption("All legs (open & closed) for this year.")
         display_trades_table(df_year)
