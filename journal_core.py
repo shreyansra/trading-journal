@@ -34,6 +34,17 @@ REQUIRED_COLUMNS = [
     "is_open"
 ]
 
+def _trigger_rerun():
+    """Force Streamlit to reload the script so new data shows up immediately."""
+    try:
+        # Newer Streamlit versions
+        st.rerun()
+    except Exception:
+        # Older versions
+        try:
+            st.experimental_rerun()
+        except Exception:
+            pass
 
 def load_data():
     if os.path.exists(DATA_FILE):
