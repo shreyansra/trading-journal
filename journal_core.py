@@ -563,6 +563,9 @@ def render_year_journal(category_name: str, year: int, df: pd.DataFrame):
                 else:
                     st.success(f"Leg #{next_id} added to trade group {group_id}.")
 
+                _trigger_rerun()
+
+    
     # ---------- Journal View (this year) ----------
     st.markdown("#### Journal View (this year)")
 
@@ -706,6 +709,9 @@ def render_year_journal(category_name: str, year: int, df: pd.DataFrame):
                                 st.session_state["editing_category"] = None
                                 st.session_state["editing_year"] = None
 
+                            _trigger_rerun()
+
+    
     # --- Closed legs tab ---
     with tab_closed:
         st.caption("Closed legs (this year).")
