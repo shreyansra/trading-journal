@@ -1,18 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Trade } from "@/lib/types";
-import TradeForm from "@/components/TradeForm";
+import { useTrades } from "@/lib/TradeContext";
 import { formatCurrency, formatDate } from "@/lib/utils";
 
 export default function TradeDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const id = params.id as string;
   const [trade, setTrade] = useState<Trade | null>(null);
   const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState(false);
+  const { setEditingTrade, setShowTradeModal } = useTrades();
 
   useEffect(() => {
     async function load() {
@@ -35,32 +36,41 @@ export default function TradeDetailPage() {
     return <div className="py-20 text-center text-muted">Trade not found</div>;
   }
 
-  if (editing) {
-    return (
-      <div className="space-y-4">
-        <h1 className="text-2xl font-bold">Edit Trade</h1>
-        <TradeForm trade={trade} />
-      </div>
-    );
-  }
+  const returnPct =
+    trade.pnl !== null && trade.entry_price > 0 && trade.quantity > 0
+      ? (trade.pnl / (trade.entry_price * trade.quantity)) * 100
+      : null;
 
   return (
     <div className="space-y-6 max-w-3xl">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">
-          {trade.ticker}{" "}
-          <span
-            className={`text-sm px-2 py-0.5 rounded ${
-              trade.direction === "long"
-                ? "bg-green/15 text-green"
-                : "bg-red/15 text-red"
-            }`}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => router.back()}
+            className="p-1.5 rounded-lg hover:bg-card text-muted hover:text-foreground transition-colors"
           >
-            {trade.direction.toUpperCase()}
-          </span>
-        </h1>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+          </button>
+          <h1 className="text-xl font-bold">
+            {trade.ticker}{" "}
+            <span
+              className={`text-sm px-2 py-0.5 rounded ${
+                trade.direction === "long"
+                  ? "bg-green/15 text-green"
+                  : "bg-red/15 text-red"
+              }`}
+            >
+              {trade.direction.toUpperCase()}
+            </span>
+          </h1>
+        </div>
         <button
-          onClick={() => setEditing(true)}
+          onClick={() => {
+            setEditingTrade(trade);
+            setShowTradeModal(true);
+          }}
           className="px-4 py-2 bg-accent hover:bg-accent-hover text-white rounded-lg text-sm font-medium transition-colors"
         >
           Edit Trade
@@ -84,14 +94,21 @@ export default function TradeDetailPage() {
         <DetailCard label="Entry Date" value={formatDate(trade.entry_date)} />
         <DetailCard
           label="Exit Date"
-          value={trade.exit_date ? formatDate(trade.exit_date) : "—"}
+          value={trade.exit_date ? formatDate(trade.exit_date) : "-"}
         />
         <DetailCard label="Fees" value={formatCurrency(trade.fees)} />
+        <DetailCard
+          label="Return %"
+          value={returnPct !== null ? `${returnPct.toFixed(2)}%` : "-"}
+          color={
+            returnPct === null ? "text-muted" : returnPct > 0 ? "text-green" : "text-red"
+          }
+        />
       </div>
 
       {trade.strategy_tags.length > 0 && (
         <div>
-          <h3 className="text-sm font-medium text-muted mb-2">Tags</h3>
+          <h3 className="text-xs font-medium text-muted mb-2 uppercase tracking-wide">Tags</h3>
           <div className="flex flex-wrap gap-2">
             {trade.strategy_tags.map((tag) => (
               <span
@@ -107,7 +124,7 @@ export default function TradeDetailPage() {
 
       {trade.notes && (
         <div>
-          <h3 className="text-sm font-medium text-muted mb-2">Notes</h3>
+          <h3 className="text-xs font-medium text-muted mb-2 uppercase tracking-wide">Notes</h3>
           <div className="bg-card border border-card-border rounded-xl p-4 text-sm whitespace-pre-wrap">
             {trade.notes}
           </div>
@@ -116,7 +133,7 @@ export default function TradeDetailPage() {
 
       {trade.screenshot_urls.length > 0 && (
         <div>
-          <h3 className="text-sm font-medium text-muted mb-2">Screenshots</h3>
+          <h3 className="text-xs font-medium text-muted mb-2 uppercase tracking-wide">Screenshots</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {trade.screenshot_urls.map((url, i) => (
               <a key={i} href={url} target="_blank" rel="noopener noreferrer">
@@ -145,8 +162,8 @@ function DetailCard({
 }) {
   return (
     <div className="bg-card border border-card-border rounded-xl p-4">
-      <p className="text-xs text-muted mb-1">{label}</p>
-      <p className={`text-lg font-bold ${color || "text-foreground"}`}>{value}</p>
+      <p className="text-xs text-muted mb-1 uppercase tracking-wide">{label}</p>
+      <p className={`text-lg font-bold font-mono ${color || "text-foreground"}`}>{value}</p>
     </div>
   );
 }

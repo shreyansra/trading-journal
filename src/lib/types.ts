@@ -24,7 +24,7 @@ export interface Tag {
 export interface TradeFilters {
   search: string;
   direction: "all" | "long" | "short";
-  result: "all" | "win" | "loss";
+  result: "all" | "win" | "loss" | "open";
   tags: string[];
   dateFrom: string;
   dateTo: string;
@@ -33,6 +33,7 @@ export interface TradeFilters {
 export interface DashboardStats {
   totalTrades: number;
   openTrades: number;
+  closedTrades: number;
   totalPnl: number;
   winRate: number;
   avgWin: number;
@@ -40,4 +41,37 @@ export interface DashboardStats {
   profitFactor: number;
   largestWin: number;
   largestLoss: number;
+  currentStreak: { type: "win" | "loss" | "none"; count: number };
+  longestWinStreak: number;
+  longestLossStreak: number;
+  avgHoldTime: string;
+  expectancy: number;
+  avgRiskReward: number;
+  todayPnl: number;
+  weekPnl: number;
+  monthPnl: number;
+}
+
+export interface CalendarDay {
+  date: string;
+  pnl: number;
+  tradeCount: number;
+}
+
+export interface HoldTimeData {
+  ticker: string;
+  holdHours: number;
+  pnl: number;
+}
+
+export interface DayOfWeekData {
+  day: string;
+  avgPnl: number;
+  tradeCount: number;
+  winRate: number;
+}
+
+export interface PnlDistributionBucket {
+  range: string;
+  count: number;
 }

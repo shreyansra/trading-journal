@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase";
 
 interface TagManagerProps {
   tags: Tag[];
-  onRefresh: () => void;
+  onRefresh?: () => void;
 }
 
 const PRESET_COLORS = [
@@ -27,12 +27,12 @@ export default function TagManager({ tags, onRefresh }: TagManagerProps) {
     setName("");
     setColor(PRESET_COLORS[0]);
     setSaving(false);
-    onRefresh();
+    onRefresh?.();
   }
 
   async function handleDelete(id: string) {
     await supabase.from("tags").delete().eq("id", id);
-    onRefresh();
+    onRefresh?.();
   }
 
   return (

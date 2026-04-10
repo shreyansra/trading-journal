@@ -1,0 +1,506 @@
+﻿Statement,Header,Field Name,Field Value
+Statement,Data,BrokerName,Interactive Brokers LLC
+Statement,Data,BrokerAddress,"Two Pickwick Plaza, Greenwich, CT 06830"
+Statement,Data,Title,Activity Statement
+Statement,Data,Period,"March 1, 2026 - March 31, 2026"
+Statement,Data,WhenGenerated,"2026-04-09, 23:55:33 EDT"
+Account Information,Header,Field Name,Field Value
+Account Information,Data,Name,Shreyansh Mridul and Plaksha Kapoor
+Account Information,Data,Account,U18954507
+Account Information,Data,Account Type,Individual
+Account Information,Data,Customer Type,Joint
+Account Information,Data,Account Capabilities,Margin
+Account Information,Data,Base Currency,USD
+Net Asset Value,Header,Asset Class,Prior Total,Current Long,Current Short,Current Total,Change
+Net Asset Value,Data,Cash ,-30870.46019474,0,-18067.25017474,-18067.25017474,12803.21002
+Net Asset Value,Data,Collateral Value,1989,0,0,0,-1989
+Net Asset Value,Data,Stock,98349.01,76620.67,0,76620.67,-21728.34
+Net Asset Value,Data,Securities Lent,-1989,0,0,0,1989
+Net Asset Value,Data,Options,51093.9,64744.03,-1649.43,63094.6,12000.7
+Net Asset Value,Data,Interest Accruals,-101.31,0,-76.17,-76.17,25.14
+Net Asset Value,Data,Dividend Accruals,0,70.08,0,70.08,70.08
+Net Asset Value,Data,Total,118471.13980526,141434.78,-19792.85017474,121641.92982526,3170.79002
+Net Asset Value,Header,Time Weighted Rate of Return
+Net Asset Value,Data,2.676424001%
+Change in NAV,Header,Field Name,Field Value
+Change in NAV,Data,Starting Value,118471.13980526
+Change in NAV,Data,Mark-to-Market,3081.08
+Change in NAV,Data,Dividends,156.17
+Change in NAV,Data,Change in Dividend Accruals,70.08
+Change in NAV,Data,Interest,-109.19
+Change in NAV,Data,Change in Interest Accruals,25.14
+Change in NAV,Data,Commissions,-52.48998
+Change in NAV,Data,Ending Value,121641.92982526
+Mark-to-Market Performance Summary,Header,Asset Category,Symbol,Prior Quantity,Current Quantity,Prior Price,Current Price,Mark-to-Market P/L Position,Mark-to-Market P/L Transaction,Mark-to-Market P/L Commissions,Mark-to-Market P/L Other,Mark-to-Market P/L Total,Code
+Mark-to-Market Performance Summary,Data,Stocks,BHP,0,0,--,--,-292,1215,-1.0195,0,921.9805,
+Mark-to-Market Performance Summary,Data,Stocks,QQQ,11,11,607.2900,577.1800,-331.21,0,0,8.06,-323.15,
+Mark-to-Market Performance Summary,Data,Stocks,SPY,39,39,685.9900,650.3400,-1390.35,0,0,0,-1390.35,
+Mark-to-Market Performance Summary,Data,Stocks,TUA,835.7311,835.7311,22.0400,21.1000,-785.58,0,0,41.79,-743.79,
+Mark-to-Market Performance Summary,Data,Stocks,USO,286,0,81.9500,--,6400.68,3057.34,-1.48577,0,9456.53423,
+Mark-to-Market Performance Summary,Data,Stocks,XOP,150,150,153.7200,181.8300,4216.5,0,0,106.32,4322.82,
+Mark-to-Market Performance Summary,Data,Total,,,,,,7818.04,4272.34,-2.50527,156.17,12244.04473,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,AA 15JAN27 30 C,1,1,33.9629,38.2975,433.46,0,0,0,433.46,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,BA 15JAN27 210 C,1,1,42.8859,24.8483,-1803.76,0,0,0,-1803.76,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,BHP 20MAR26 77.5 P,1,0,1.3877,--,1082.23,-1221,0,0,-138.77,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,BHP 15JAN27 42.5 C,1,1,39.2493,31.6501,-759.92,0,0,0,-759.92,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,BTU 15JAN27 15 C,1,1,17.3080,19.0210,171.3,0,0,0,171.3,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,CCJ 15JAN27 90 C,1,1,41.2048,32.6449,-855.99,0,0,0,-855.99,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,GDX 15JAN27 95 C,0,1,--,14.6876,-74.75,3.51,-0.76795,0,-72.00795,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,GLD 15JAN27 410 C,0,1,--,62.4996,1569.79,-9.83,-0.79795,0,1559.16205,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,GLD 15JAN27 480 C,0,0,--,--,-1972.62,-2.38,-1.59919,0,-1976.59919,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,GLD 15JAN27 600 C,0,0,--,--,589.62,12.38,-1.59919,0,600.40081,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,GLD 15JAN27 900 C,0,-3,--,2.2924,752.28,-96,-1.35372,0,654.92628,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,MOS 15JAN27 30 C,0,1,--,3.1750,-235.5,-22,-0.69795,0,-258.19795,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,OIH 20MAR26 370 P,0,0,--,--,-775,-115,-0.04795,0,-890.04795,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,OIH 20MAR26 425 C,0,0,--,--,227.71,-7.71,-0.09919,0,219.90081,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,OIH 15JAN27 200 C,1,1,205.1404,214.0228,888.24,0,0,0,888.24,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,PG 02APR26 152.5 P,0,2,--,8.0600,967.04,118.96,-1.3959,0,1084.6041,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,PG 17APR26 145 C,0,2,--,2.8350,-1121.16,-291.84,-1.3959,0,-1414.3959,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,PG 17APR26 160 C,0,2,--,0.0754,-196.92,-94,-1.3959,0,-292.3159,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,SLV 17APR26 50 P,0,-2,--,0.2747,135.14,-12.08,-0.56248,0,122.49752,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,SLV 17APR26 55 P,0,2,--,0.5603,-291.26,19.32,-0.5559,0,-272.4959,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,SLV 15JAN27 63 C,0,2,--,16.4600,729.06,-147.06,-0.5559,0,581.4441,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,SLV 15JAN27 80 C,0,0,--,--,-1027.06,-66.94,-1.45838,0,-1095.45838,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,SLV 15JAN27 150 C,0,0,--,--,411.62,16.38,-1.95838,0,426.04162,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,SPY 18JUN26 580 P,0,-1,--,7.6800,459,-306,-3.23962,0,149.76038,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,SPY 18JUN26 600 P,0,0,--,--,-579.5,250.5,-3.58757,0,-332.58757,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,SPY 18JUN26 650 P,0,1,--,23.2150,183,318.5,-1.04795,0,500.45205,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,SPY 18DEC26 690 P,1,1,40.2300,57.9616,1773.16,0,0,0,1773.16,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,TECK 15JAN27 43 C,2,2,19.3836,14.2853,-1019.66,0,0,0,-1019.66,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,TLT 15JAN27 90 C,2,2,4.2947,2.4750,-363.94,0,0,0,-363.94,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,USO 20MAR26 86 P,0,0,--,--,-1197.4,-206.6,-4.79676,0,-1408.79676,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,USO 20MAR26 95 C,0,0,--,--,-5737.6,537.6,-7.43676,0,-5207.43676,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,USO 20MAR26 105 P,0,0,--,--,455.07,-908.07,-3.44757,0,-456.44757,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,USO 20MAR26 120 C,0,0,--,--,-764.36,-771.64,-2.30338,0,-1538.30338,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,USO 20MAR26 125 C,0,0,--,--,416.4,-1424.4,-3.14757,0,-1011.14757,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,USO 20MAR26 145 C,0,0,--,--,418.54,479.46,-1.39838,0,896.60162,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,USO 15JAN27 67 C,1,0,19.9048,--,2090.41,969.11,-0.80124,0,3058.71876,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,VALE 15JAN27 10 C,3,3,7.4362,6.2125,-367.11,0,0,0,-367.11,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,WY 15JAN27 25 C,0,5,--,2.4250,-39.9,-72.6,1.51025,0,-110.98975,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,XOP 20MAR26 155 P,0,0,--,--,-332.67,-137.33,-0.69795,0,-470.69795,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,XOP 20MAR26 170 C,0,0,--,--,-6.38,-175.62,-1.49919,0,-183.49919,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,XOP 17APR26 180 P,0,1,--,5.1524,14.51,26.73,-1.04795,0,40.19205,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,XOP 17APR26 200 C,0,-1,--,1.3877,86.23,-5,-0.80124,0,80.42876,
+Mark-to-Market Performance Summary,Data,Total,,,,,,-5668.65,-3340.65,-49.98471,0,-9059.28471,
+Mark-to-Market Performance Summary,Data,Forex,USD,-30870.46019474,-18067.25017474,1.0000,1.0000,0,0,0,0,0,
+Mark-to-Market Performance Summary,Data,Total,,,,,,0,0,0,0,0,
+Mark-to-Market Performance Summary,Data,Total (All Assets),,,,,,2149.39,931.69,-52.48998,156.17,3184.76002,
+Mark-to-Market Performance Summary,Data,Broker Interest Paid and Received,,,,,,,,,,-109.19,
+Total P/L for Statement Period,,,,,,,,,,,,3075.57002,
+Realized & Unrealized Performance Summary,Header,Asset Category,Symbol,Cost Adj.,Realized S/T Profit,Realized S/T Loss,Realized L/T Profit,Realized L/T Loss,Realized Total,Unrealized S/T Profit,Unrealized S/T Loss,Unrealized L/T Profit,Unrealized L/T Loss,Unrealized Total,Total,Code
+Realized & Unrealized Performance Summary,Data,Stocks,BHP,0,757.98175,0,0,0,757.98175,0,0,0,0,0,757.98175,
+Realized & Unrealized Performance Summary,Data,Stocks,QQQ,0,0,0,0,0,0,1659.78,0,0,0,1659.78,1659.78,
+Realized & Unrealized Performance Summary,Data,Stocks,SPY,0,0,0,0,0,0,5561.2,0,0,0,5561.2,5561.2,
+Realized & Unrealized Performance Summary,Data,Stocks,TUA,0,0,0,0,0,0,0,-736.366106,0,0,-736.366106,-736.366106,
+Realized & Unrealized Performance Summary,Data,Stocks,USO,0,11625.262392,0,0,0,11625.262392,0,0,0,0,0,11625.262392,
+Realized & Unrealized Performance Summary,Data,Stocks,XOP,0,0,0,0,0,0,7788.451965,0,0,0,7788.451965,7788.451965,
+Realized & Unrealized Performance Summary,Data,Total,,0,12383.244142,0,0,0,12383.244142,15009.431965,-736.366106,0,0,14273.065859,26656.310001,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,AA 15JAN27 30 C,0,0,0,0,0,0,3080.69855,0,0,0,3080.69855,3080.69855,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,BA 15JAN27 210 C,0,0,0,0,0,0,0,-865.9341,0,0,-865.9341,-865.9341,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,BHP 15JAN27 42.5 C,0,0,0,0,0,0,1803.00855,0,0,0,1803.00855,1803.00855,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,BTU 15JAN27 15 C,0,0,0,0,0,0,0,-48.94875,0,0,-48.94875,-48.94875,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,CCJ 15JAN27 90 C,0,0,0,0,0,0,0,-566.30875,0,0,-566.30875,-566.30875,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,GDX 15JAN27 95 C,0,0,0,0,0,0,0,-72.00795,0,0,-72.00795,-72.00795,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,GLD 15JAN27 410 C,0,0,0,0,0,0,1559.16205,0,0,0,1559.16205,1559.16205,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,GLD 15JAN27 480 C,0,0,-1976.59919,0,0,-1976.59919,0,0,0,0,0,-1976.59919,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,GLD 15JAN27 600 C,0,600.40081,0,0,0,600.40081,0,0,0,0,0,600.40081,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,GLD 15JAN27 900 C,0,0,0,0,0,0,654.92628,0,0,0,654.92628,654.92628,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,MOS 15JAN27 30 C,0,0,0,0,0,0,0,-258.19795,0,0,-258.19795,-258.19795,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,OIH 20MAR26 370 P,0,0,-890.04795,0,0,-890.04795,0,0,0,0,0,-890.04795,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,OIH 20MAR26 425 C,0,219.90081,0,0,0,219.90081,0,0,0,0,0,219.90081,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,OIH 15JAN27 200 C,0,0,0,0,0,0,13883.27935,0,0,0,13883.27935,13883.27935,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,PG 02APR26 152.5 P,0,0,0,0,0,0,1084.6041,0,0,0,1084.6041,1084.6041,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,PG 17APR26 145 C,0,0,0,0,0,0,0,-1414.3959,0,0,-1414.3959,-1414.3959,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,PG 17APR26 160 C,0,0,0,0,0,0,0,-292.3159,0,0,-292.3159,-292.3159,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,SLV 17APR26 50 P,0,0,0,0,0,0,122.49752,0,0,0,122.49752,122.49752,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,SLV 17APR26 55 P,0,0,0,0,0,0,0,-272.4959,0,0,-272.4959,-272.4959,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,SLV 15JAN27 63 C,0,0,0,0,0,0,581.4441,0,0,0,581.4441,581.4441,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,SLV 15JAN27 80 C,0,0,-1095.45838,0,0,-1095.45838,0,0,0,0,0,-1095.45838,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,SLV 15JAN27 150 C,0,426.04162,0,0,0,426.04162,0,0,0,0,0,426.04162,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,SPY 18JUN26 580 P,0,0,-261.88838,0,0,-261.88838,411.64876,0,0,0,411.64876,149.76038,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,SPY 18JUN26 600 P,0,343.15162,-675.73919,0,0,-332.58757,0,0,0,0,0,-332.58757,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,SPY 18JUN26 650 P,0,0,0,0,0,0,500.45205,0,0,0,500.45205,500.45205,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,SPY 18DEC26 690 P,0,0,0,0,0,0,1542.41125,0,0,0,1542.41125,1542.41125,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,TECK 15JAN27 43 C,0,0,0,0,0,0,1297.6682,0,0,0,1297.6682,1297.6682,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,TLT 15JAN27 90 C,0,0,0,0,0,0,0,-306.3975,0,0,-306.3975,-306.3975,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,USO 20MAR26 86 P,0,0,-1408.79676,0,0,-1408.79676,0,0,0,0,0,-1408.79676,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,USO 20MAR26 95 C,0,0,-5207.43676,0,0,-5207.43676,0,0,0,0,0,-5207.43676,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,USO 20MAR26 105 P,0,0,-456.44757,0,0,-456.44757,0,0,0,0,0,-456.44757,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,USO 20MAR26 120 C,0,0,-1538.30338,0,0,-1538.30338,0,0,0,0,0,-1538.30338,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,USO 20MAR26 125 C,0,0,-1011.14757,0,0,-1011.14757,0,0,0,0,0,-1011.14757,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,USO 20MAR26 145 C,0,896.60162,0,0,0,896.60162,0,0,0,0,0,896.60162,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,USO 15JAN27 67 C,0,3308.14811,0,0,0,3308.14811,0,0,0,0,0,3308.14811,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,VALE 15JAN27 10 C,0,0,0,0,0,0,1460.47905,0,0,0,1460.47905,1460.47905,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,WY 15JAN27 25 C,0,0,0,0,0,0,0,-110.98975,0,0,-110.98975,-110.98975,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,XOP 20MAR26 155 P,0,0,-470.69795,0,0,-470.69795,0,0,0,0,0,-470.69795,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,XOP 20MAR26 170 C,0,0,-183.49919,0,0,-183.49919,0,0,0,0,0,-183.49919,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,XOP 17APR26 180 P,0,0,0,0,0,0,40.19205,0,0,0,40.19205,40.19205,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,XOP 17APR26 200 C,0,0,0,0,0,0,80.42876,0,0,0,80.42876,80.42876,
+Realized & Unrealized Performance Summary,Data,Total,,0,5794.24459,-15176.06227,0,0,-9381.81768,28102.90062,-4207.99245,0,0,23894.90817,14513.09049,
+Realized & Unrealized Performance Summary,Data,Total (All Assets),,0,18177.488732,-15176.06227,0,0,3001.426462,43112.332585,-4944.358556,0,0,38167.974029,41169.400491,
+Cash Report,Header,Currency Summary,Currency,Total,Securities,Futures,
+Cash Report,Data,Starting Cash,Base Currency Summary,-30870.46019474,-30870.46019474,0,
+Cash Report,Data,Commissions,Base Currency Summary,-52.48998,-52.48998,0,
+Cash Report,Data,Dividends,Base Currency Summary,51.22,51.22,0,
+Cash Report,Data,Broker Interest Paid and Received,Base Currency Summary,-109.19,-109.19,0,
+Cash Report,Data,Trades (Sales),Base Currency Summary,69220.72,69220.72,0,
+Cash Report,Data,Trades (Purchase),Base Currency Summary,-56412,-56412,0,
+Cash Report,Data,Payment In Lieu of Dividends,Base Currency Summary,104.95,104.95,0,
+Cash Report,Data,Ending Cash,Base Currency Summary,-18067.25017474,-18067.25017474,0,
+Cash Report,Data,Ending Settled Cash,Base Currency Summary,-18067.25017474,-18067.25017474,0,
+Cash Report,Data,Starting Collateral Value,Base Currency Summary,1989,1989,0,
+Cash Report,Data,Net Securities Lent Activity,Base Currency Summary,-1989,-1989,0,
+Cash Report,Data,Ending Collateral Value,Base Currency Summary,0,0,0,
+Cash Report,Data,Net Cash Balance,Base Currency Summary,0,0,0,
+Cash Report,Data,Net Settled Cash Balance,Base Currency Summary,0,0,0,
+Open Positions,Header,DataDiscriminator,Asset Category,Currency,Symbol,Quantity,Mult,Cost Price,Cost Basis,Close Price,Value,Unrealized P/L,Code
+Open Positions,Data,Summary,Stocks,USD,QQQ,11,1,426.290909091,4689.2,577.18,6348.98,1659.78,
+Open Positions,Data,Summary,Stocks,USD,SPY,39,1,507.745128205,19802.06,650.34,25363.26,5561.2,
+Open Positions,Data,Summary,Stocks,USD,TUA,835.7311,1,21.981108641,18370.296104,21.1,17633.93,-736.366106,
+Open Positions,Data,Summary,Stocks,USD,XOP,150,1,129.9069869,19486.048035,181.83,27274.5,7788.451965,
+Open Positions,Total,,Stocks,USD,,,,,62347.604139,,76620.67,14273.065859,
+Open Positions,Header,DataDiscriminator,Asset Category,Currency,Symbol,Quantity,Mult,Cost Price,Cost Basis,Close Price,Value,Unrealized P/L,Code
+Open Positions,Data,Summary,Equity and Index Options,USD,AA 15JAN27 30 C,1,100,7.4905145,749.05145,38.2975,3829.75,3080.69855,
+Open Positions,Data,Summary,Equity and Index Options,USD,BA 15JAN27 210 C,1,100,33.507641,3350.7641,24.8483,2484.83,-865.9341,
+Open Positions,Data,Summary,Equity and Index Options,USD,BHP 15JAN27 42.5 C,1,100,13.6200145,1362.00145,31.6501,3165.01,1803.00855,
+Open Positions,Data,Summary,Equity and Index Options,USD,BTU 15JAN27 15 C,1,100,19.5104875,1951.04875,19.021,1902.1,-48.94875,
+Open Positions,Data,Summary,Equity and Index Options,USD,CCJ 15JAN27 90 C,1,100,38.3079875,3830.79875,32.6449,3264.49,-566.30875,
+Open Positions,Data,Summary,Equity and Index Options,USD,GDX 15JAN27 95 C,1,100,15.4076795,1540.76795,14.6876,1468.76,-72.00795,
+Open Positions,Data,Summary,Equity and Index Options,USD,GLD 15JAN27 410 C,1,100,46.9079795,4690.79795,62.4996,6249.96,1559.16205,
+Open Positions,Data,Summary,Equity and Index Options,USD,GLD 15JAN27 900 C,-3,100,4.4754876,-1342.64628,2.2924,-687.72,654.92628,
+Open Positions,Data,Summary,Equity and Index Options,USD,MOS 15JAN27 30 C,1,100,5.7569795,575.69795,3.175,317.5,-258.19795,
+Open Positions,Data,Summary,Equity and Index Options,USD,OIH 15JAN27 200 C,1,100,75.1900065,7519.00065,214.0228,21402.28,13883.27935,
+Open Positions,Data,Summary,Equity and Index Options,USD,PG 02APR26 152.5 P,2,100,2.6369795,527.3959,8.06,1612,1084.6041,
+Open Positions,Data,Summary,Equity and Index Options,USD,PG 17APR26 145 C,2,100,9.9069795,1981.3959,2.835,567,-1414.3959,
+Open Positions,Data,Summary,Equity and Index Options,USD,PG 17APR26 160 C,2,100,1.5369795,307.3959,0.0754,15.08,-292.3159,
+Open Positions,Data,Summary,Equity and Index Options,USD,SLV 17APR26 50 P,-2,100,0.8871876,-177.43752,0.2747,-54.94,122.49752,
+Open Positions,Data,Summary,Equity and Index Options,USD,SLV 17APR26 55 P,2,100,1.9227795,384.5559,0.5603,112.06,-272.4959,
+Open Positions,Data,Summary,Equity and Index Options,USD,SLV 15JAN27 63 C,2,100,13.5527795,2710.5559,16.46,3292,581.4441,
+Open Positions,Data,Summary,Equity and Index Options,USD,SPY 18JUN26 580 P,-1,100,11.7964876,-1179.64876,7.68,-768,411.64876,
+Open Positions,Data,Summary,Equity and Index Options,USD,SPY 18JUN26 650 P,1,100,18.2104795,1821.04795,23.215,2321.5,500.45205,
+Open Positions,Data,Summary,Equity and Index Options,USD,SPY 18DEC26 690 P,1,100,42.5374875,4253.74875,57.9616,5796.16,1542.41125,
+Open Positions,Data,Summary,Equity and Index Options,USD,TECK 15JAN27 43 C,2,100,7.796959,1559.3918,14.2853,2857.06,1297.6682,
+Open Positions,Data,Summary,Equity and Index Options,USD,TLT 15JAN27 90 C,2,100,4.0069875,801.3975,2.475,495,-306.3975,
+Open Positions,Data,Summary,Equity and Index Options,USD,VALE 15JAN27 10 C,3,100,1.3442365,403.27095,6.2125,1863.75,1460.47905,
+Open Positions,Data,Summary,Equity and Index Options,USD,WY 15JAN27 25 C,5,100,2.6469795,1323.48975,2.425,1212.5,-110.98975,
+Open Positions,Data,Summary,Equity and Index Options,USD,XOP 17APR26 180 P,1,100,4.7504795,475.04795,5.1524,515.24,40.19205,
+Open Positions,Data,Summary,Equity and Index Options,USD,XOP 17APR26 200 C,-1,100,2.1919876,-219.19876,1.3877,-138.77,80.42876,
+Open Positions,Total,,Equity and Index Options,USD,,,,,39199.69183,,63094.6,23894.90817,
+Net Stock Position Summary,Header,Asset Category,Currency,Symbol,Description,Shares at IB,Shares Borrowed,Shares Lent,Net Shares
+Net Stock Position Summary,Data,Stocks,USD,QQQ,INVESCO QQQ TRUST SERIES 1,11,0,0,11
+Net Stock Position Summary,Data,Stocks,USD,SPY,SS SPDR S&P 500 ETF TRUST-US,39,0,0,39
+Net Stock Position Summary,Data,Stocks,USD,TUA,SIM ST TREAS FUT STRAT ETF,835.7311,0,0,835.7311
+Net Stock Position Summary,Data,Stocks,USD,XOP,SS SPDR S&P OG EXP & PROD,150,0,0,150
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Stocks,USD,BHP,"2026-03-20, 16:20:00",-100,77.5,65.29,7750,-0.0195,-7749.9805,0,1221,Ex;O
+Trades,Data,Order,Stocks,USD,BHP,"2026-03-23, 10:09:53",100,68.27,68.21,-6827,-1,7585.98175,757.98175,-6,C
+Trades,SubTotal,,Stocks,USD,BHP,,0,,,923,-1.0195,-163.99875,757.98175,1215,
+Trades,Data,Order,Stocks,USD,USO,"2026-03-09, 12:21:57",-286,115.02,104.33,32895.72,-1.48577,-21268.971838,11625.262392,3057.34,C;P
+Trades,SubTotal,,Stocks,USD,USO,,-286,,,32895.72,-1.48577,-21268.971838,11625.262392,3057.34,
+Trades,Total,,Stocks,USD,,,,,,33818.72,-2.50527,-21432.970588,12383.244142,4272.34, 
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Equity and Index Options,USD,BHP 20MAR26 77.5 P,"2026-03-20, 16:20:00",-1,0,12.21,0,0,-163.99875,0,-1221,C;Ex
+Trades,SubTotal,,Equity and Index Options,USD,BHP 20MAR26 77.5 P,,-1,,,0,0,-163.99875,0,-1221,
+Trades,Data,Order,Equity and Index Options,USD,GDX 15JAN27 95 C,"2026-03-13, 15:30:11",1,15.4,15.4351,-1540,-0.76795,1540.76795,0,3.51,O
+Trades,SubTotal,,Equity and Index Options,USD,GDX 15JAN27 95 C,,1,,,-1540,-0.76795,1540.76795,0,3.51,
+Trades,Data,Order,Equity and Index Options,USD,GLD 15JAN27 410 C,"2026-03-23, 14:03:04",1,46.9,46.8017,-4690,-0.79795,4690.79795,0,-9.83,O
+Trades,SubTotal,,Equity and Index Options,USD,GLD 15JAN27 410 C,,1,,,-4690,-0.79795,4690.79795,0,-9.83,
+Trades,Data,Order,Equity and Index Options,USD,GLD 15JAN27 480 C,"2026-03-16, 10:23:53",1,43.6,42.7966,-4360,-0.79795,4360.79795,0,-80.34,O
+Trades,Data,Order,Equity and Index Options,USD,GLD 15JAN27 480 C,"2026-03-23, 10:20:55",-1,23.85,23.0704,2385,-0.80124,-4360.79795,-1976.59919,77.96,C
+Trades,SubTotal,,Equity and Index Options,USD,GLD 15JAN27 480 C,,0,,,-1975,-1.59919,0,-1976.59919,-2.38,
+Trades,Data,Order,Equity and Index Options,USD,GLD 15JAN27 600 C,"2026-03-16, 10:27:20",-1,14,13.8047,1400,-0.80124,-1399.19876,0,19.53,O
+Trades,Data,Order,Equity and Index Options,USD,GLD 15JAN27 600 C,"2026-03-23, 10:22:18",1,7.98,7.9085,-798,-0.79795,1399.19876,600.40081,-7.15,C
+Trades,SubTotal,,Equity and Index Options,USD,GLD 15JAN27 600 C,,0,,,602,-1.59919,0,600.40081,12.38,
+Trades,Data,Order,Equity and Index Options,USD,GLD 15JAN27 900 C,"2026-03-02, 13:18:05",-3,4.48,4.8,1344,-1.35372,-1342.64628,0,-96,O
+Trades,SubTotal,,Equity and Index Options,USD,GLD 15JAN27 900 C,,-3,,,1344,-1.35372,-1342.64628,0,-96,
+Trades,Data,Order,Equity and Index Options,USD,MOS 15JAN27 30 C,"2026-03-13, 09:51:30",1,5.75,5.53,-575,-0.69795,575.69795,0,-22,O
+Trades,SubTotal,,Equity and Index Options,USD,MOS 15JAN27 30 C,,1,,,-575,-0.69795,575.69795,0,-22,
+Trades,Data,Order,Equity and Index Options,USD,OIH 20MAR26 425 C,"2026-03-04, 09:53:51",-1,2.3,2.2771,230,-0.05124,-229.94876,0,2.29,O
+Trades,Data,Order,Equity and Index Options,USD,OIH 20MAR26 425 C,"2026-03-20, 15:23:29",1,0.1,0,-10,-0.04795,229.94876,219.90081,-10,C
+Trades,SubTotal,,Equity and Index Options,USD,OIH 20MAR26 425 C,,0,,,220,-0.09919,0,219.90081,-7.71,
+Trades,Data,Order,Equity and Index Options,USD,OIH 20MAR26 370 P,"2026-03-04, 09:53:37",1,8.9,7.75,-890,-0.04795,890.04795,0,-115,O
+Trades,Data,Order,Equity and Index Options,USD,OIH 20MAR26 370 P,"2026-03-20, 16:20:00",-1,0,0,0,0,-890.04795,-890.04795,0,C;Ep
+Trades,SubTotal,,Equity and Index Options,USD,OIH 20MAR26 370 P,,0,,,-890,-0.04795,0,-890.04795,-115,
+Trades,Data,Order,Equity and Index Options,USD,PG 02APR26 152.5 P,"2026-03-17, 10:10:28",2,2.63,3.2248,-526,-1.3959,527.3959,0,118.96,O
+Trades,SubTotal,,Equity and Index Options,USD,PG 02APR26 152.5 P,,2,,,-526,-1.3959,527.3959,0,118.96,
+Trades,Data,Order,Equity and Index Options,USD,PG 17APR26 145 C,"2026-03-17, 10:10:06",2,9.9,8.4408,-1980,-1.3959,1981.3959,0,-291.84,O
+Trades,SubTotal,,Equity and Index Options,USD,PG 17APR26 145 C,,2,,,-1980,-1.3959,1981.3959,0,-291.84,
+Trades,Data,Order,Equity and Index Options,USD,PG 17APR26 160 C,"2026-03-17, 10:10:05",2,1.53,1.06,-306,-1.3959,307.3959,0,-94,O
+Trades,SubTotal,,Equity and Index Options,USD,PG 17APR26 160 C,,2,,,-306,-1.3959,307.3959,0,-94,
+Trades,Data,Order,Equity and Index Options,USD,SLV 17APR26 50 P,"2026-03-26, 14:36:45",-2,0.89,0.9504,178,-0.56248,-177.43752,0,-12.08,O
+Trades,SubTotal,,Equity and Index Options,USD,SLV 17APR26 50 P,,-2,,,178,-0.56248,-177.43752,0,-12.08,
+Trades,Data,Order,Equity and Index Options,USD,SLV 17APR26 55 P,"2026-03-26, 14:38:40",2,1.92,2.0166,-384,-0.5559,384.5559,0,19.32,O
+Trades,SubTotal,,Equity and Index Options,USD,SLV 17APR26 55 P,,2,,,-384,-0.5559,384.5559,0,19.32,
+Trades,Data,Order,Equity and Index Options,USD,SLV 15JAN27 63 C,"2026-03-23, 10:25:57",2,13.55,12.8147,-2710,-0.5559,2710.5559,0,-147.06,O
+Trades,SubTotal,,Equity and Index Options,USD,SLV 15JAN27 63 C,,2,,,-2710,-0.5559,2710.5559,0,-147.06,
+Trades,Data,Order,Equity and Index Options,USD,SLV 15JAN27 80 C,"2026-03-16, 10:22:50",2,14.07,13.4729,-2814,-0.8959,2814.8959,0,-119.42,O
+Trades,Data,Order,Equity and Index Options,USD,SLV 15JAN27 80 C,"2026-03-23, 10:24:13",-2,8.6,8.3376,1720,-0.56248,-2814.8959,-1095.45838,52.48,C
+Trades,SubTotal,,Equity and Index Options,USD,SLV 15JAN27 80 C,,0,,,-1094,-1.45838,0,-1095.45838,-66.94,
+Trades,Data,Order,Equity and Index Options,USD,SLV 15JAN27 150 C,"2026-03-16, 10:26:24",-2,4.87,4.7341,974,-1.40248,-972.59752,0,27.18,O
+Trades,Data,Order,Equity and Index Options,USD,SLV 15JAN27 150 C,"2026-03-23, 10:24:22",2,2.73,2.676,-546,-0.5559,972.59752,426.04162,-10.8,C
+Trades,SubTotal,,Equity and Index Options,USD,SLV 15JAN27 150 C,,0,,,428,-1.95838,0,426.04162,16.38,
+Trades,Data,Order,Equity and Index Options,USD,SPY 18JUN26 580 P,"2026-03-30, 10:22:05",-3,11.793333333,12.27,3538,-1.14372,-3536.85628,0,-143,O;P
+Trades,Data,Order,Equity and Index Options,USD,SPY 18JUN26 580 P,"2026-03-30, 15:12:55",1,13.14,12.27,-1314,-1.04795,1178.30876,-136.73919,-87,C
+Trades,Data,Order,Equity and Index Options,USD,SPY 18JUN26 580 P,"2026-03-30, 15:15:55",1,13.03,12.27,-1303,-1.04795,1178.89876,-125.14919,-76,C
+Trades,SubTotal,,Equity and Index Options,USD,SPY 18JUN26 580 P,,-1,,,921,-3.23962,-1179.64876,-261.88838,-306,
+Trades,Data,Order,Equity and Index Options,USD,SPY 18JUN26 600 P,"2026-03-18, 09:37:55",-1,9.01,10.7,901,-1.05124,-899.94876,0,-169,O
+Trades,Data,Order,Equity and Index Options,USD,SPY 18JUN26 600 P,"2026-03-30, 10:22:05",3,15.753333333,16.495,-4726,-1.13385,4051.39466,-675.73919,222.5,C;O;P
+Trades,Data,Order,Equity and Index Options,USD,SPY 18JUN26 600 P,"2026-03-30, 15:15:28",-2,17.48,16.495,3496,-1.40248,-3151.4459,343.15162,197,C
+Trades,SubTotal,,Equity and Index Options,USD,SPY 18JUN26 600 P,,0,,,-329,-3.58757,0,-332.58757,250.5,
+Trades,Data,Order,Equity and Index Options,USD,SPY 18JUN26 650 P,"2026-03-18, 09:38:12",1,18.2,21.385,-1820,-1.04795,1821.04795,0,318.5,O
+Trades,SubTotal,,Equity and Index Options,USD,SPY 18JUN26 650 P,,1,,,-1820,-1.04795,1821.04795,0,318.5,
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 95 C,"2026-03-02, 11:29:34",-4,3.15,3.6674,1260,-4.64496,-1255.35504,0,-206.96,O
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 95 C,"2026-03-06, 13:18:06",4,16.15,18.0114,-6460,-2.7918,1255.35504,-5207.43676,744.56,C
+Trades,SubTotal,,Equity and Index Options,USD,USO 20MAR26 95 C,,0,,,-5200,-7.43676,0,-5207.43676,537.6,
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 120 C,"2026-03-09, 13:17:41",2,10,5.2518,-2000,-0.8959,2000.8959,0,-949.64,O
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 120 C,"2026-03-20, 15:22:30",-2,2.32,1.43,464,-1.40748,-2000.8959,-1538.30338,178,C;P
+Trades,SubTotal,,Equity and Index Options,USD,USO 20MAR26 120 C,,0,,,-1536,-2.30338,0,-1538.30338,-771.64,
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 125 C,"2026-03-06, 14:19:59",-3,5.54,5.725,1662,-2.10372,-1659.89628,0,-55.5,O
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 125 C,"2026-03-09, 12:22:22",3,8.9,4.337,-2670,-1.04385,1659.89628,-1011.14757,-1368.9,C
+Trades,SubTotal,,Equity and Index Options,USD,USO 20MAR26 125 C,,0,,,-1008,-3.14757,0,-1011.14757,-1424.4,
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 145 C,"2026-03-09, 13:17:56",-2,4.5,2.0927,900,-0.70248,-899.29752,0,481.46,O
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 145 C,"2026-03-20, 15:21:33",2,0.01,0,-2,-0.6959,899.29752,896.60162,-2,C
+Trades,SubTotal,,Equity and Index Options,USD,USO 20MAR26 145 C,,0,,,898,-1.39838,0,896.60162,479.46,
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 86 P,"2026-03-02, 11:29:04",4,5.01,4.8887,-2004,-1.9918,2005.9918,0,-48.52,O;P
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 86 P,"2026-03-06, 13:20:03",-4,1.5,1.8952,600,-2.80496,-2005.9918,-1408.79676,-158.08,C;P
+Trades,SubTotal,,Equity and Index Options,USD,USO 20MAR26 86 P,,0,,,-1404,-4.79676,0,-1408.79676,-206.6,
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 105 P,"2026-03-06, 14:16:06",3,8.56,8.5952,-2568,-2.09385,2570.09385,0,10.56,O;P
+Trades,Data,Order,Equity and Index Options,USD,USO 20MAR26 105 P,"2026-03-09, 12:22:25",-3,7.05,10.1121,2115,-1.35372,-2570.09385,-456.44757,-918.63,C
+Trades,SubTotal,,Equity and Index Options,USD,USO 20MAR26 105 P,,0,,,-453,-3.44757,0,-456.44757,-908.07,
+Trades,Data,Order,Equity and Index Options,USD,USO 15JAN27 67 C,"2026-03-09, 11:55:30",-1,50.5,40.8089,5050,-0.80124,-1741.05065,3308.14811,969.11,C
+Trades,SubTotal,,Equity and Index Options,USD,USO 15JAN27 67 C,,-1,,,5050,-0.80124,-1741.05065,3308.14811,969.11,
+Trades,Data,Order,Equity and Index Options,USD,WY 15JAN27 25 C,"2026-03-05, 12:41:52",5,2.65,2.5048,-1325,1.51025,1323.48975,0,-72.6,O
+Trades,SubTotal,,Equity and Index Options,USD,WY 15JAN27 25 C,,5,,,-1325,1.51025,1323.48975,0,-72.6,
+Trades,Data,Order,Equity and Index Options,USD,XOP 20MAR26 170 C,"2026-03-04, 09:49:36",-1,1.38,2.8762,138,-0.80124,-137.19876,0,-149.62,O
+Trades,Data,Order,Equity and Index Options,USD,XOP 20MAR26 170 C,"2026-03-12, 15:11:39",1,3.2,2.94,-320,-0.69795,137.19876,-183.49919,-26,C
+Trades,SubTotal,,Equity and Index Options,USD,XOP 20MAR26 170 C,,0,,,-182,-1.49919,0,-183.49919,-175.62,
+Trades,Data,Order,Equity and Index Options,USD,XOP 20MAR26 155 P,"2026-03-04, 09:49:09",1,4.7,3.3267,-470,-0.69795,470.69795,0,-137.33,O
+Trades,Data,Order,Equity and Index Options,USD,XOP 20MAR26 155 P,"2026-03-20, 16:20:00",-1,0,0,0,0,-470.69795,-470.69795,0,C;Ep
+Trades,SubTotal,,Equity and Index Options,USD,XOP 20MAR26 155 P,,0,,,-470,-0.69795,0,-470.69795,-137.33,
+Trades,Data,Order,Equity and Index Options,USD,XOP 17APR26 200 C,"2026-03-26, 14:41:23",-1,2.2,2.25,220,-0.80124,-219.19876,0,-5,O
+Trades,SubTotal,,Equity and Index Options,USD,XOP 17APR26 200 C,,-1,,,220,-0.80124,-219.19876,0,-5,
+Trades,Data,Order,Equity and Index Options,USD,XOP 17APR26 180 P,"2026-03-26, 14:41:15",1,4.74,5.0073,-474,-1.04795,475.04795,0,26.73,O
+Trades,SubTotal,,Equity and Index Options,USD,XOP 17APR26 180 P,,1,,,-474,-1.04795,475.04795,0,26.73,
+Trades,Total,,Equity and Index Options,USD,,,,,,-21010,-49.98471,11514.16828,-9381.81768,-3340.65, 
+Dividends,Header,Currency,Date,Description,Amount
+Dividends,Data,USD,2026-03-25,XOP(US78468R5569) Payment in Lieu of Dividend (Ordinary Dividend),104.9
+Dividends,Data,USD,2026-03-25,XOP(US78468R5569) Cash Dividend USD 0.708778 per Share (Ordinary Dividend),1.42
+Dividends,Data,USD,2026-03-27,QQQ(US46090E1038) Cash Dividend USD 0.73282 per Share (Ordinary Dividend),8.06
+Dividends,Data,USD,2026-03-31,TUA(US82889N6572) Cash Dividend USD 0.05 per Share (Ordinary Dividend),41.74
+Dividends,Data,USD,2026-03-31,TUA(US82889N6572) Payment in Lieu of Dividend (Ordinary Dividend),0.05
+Dividends,Data,Total,,,156.17
+Interest,Header,Currency,Date,Description,Amount
+Interest,Data,USD,2026-03-04,USD Debit Interest for Feb-2026,-110.13
+Interest,Data,USD,2026-03-04,USD Borrow Fees for Feb-2026,-0.06
+Interest,Data,USD,2026-03-04,USD IBKR Managed Securities (SYEP) for Feb-2026,1
+Interest,Data,Total,,,-109.19
+Interest Accruals,Header,Currency,Field Name,Field Value
+Interest Accruals,Data,Base Currency Summary,Starting Accrual Balance,-101.31
+Interest Accruals,Data,Base Currency Summary,Interest Accrued,-85.05
+Interest Accruals,Data,Base Currency Summary,Accrual Reversal,110.19
+Interest Accruals,Data,Base Currency Summary,Ending Accrual Balance,-76.17
+Change in Dividend Accruals,Header,Asset Category,Currency,Symbol,Date,Ex Date,Pay Date,Quantity,Tax,Fee,Gross Rate,Gross Amount,Net Amount,Code
+Change in Dividend Accruals,Data,Starting Dividend Accruals in USD,,,,,,,,,,,0,
+Change in Dividend Accruals,Data,Stocks,USD,QQQ,2026-03-20,2026-03-23,2026-03-27,11,0,0,0.73282,8.06,8.06,Po
+Change in Dividend Accruals,Data,Stocks,USD,QQQ,2026-03-27,2026-03-23,2026-03-27,11,0,0,0.73282,-8.06,-8.06,Re
+Change in Dividend Accruals,Data,Stocks,USD,SPY,2026-03-19,2026-03-20,2026-04-30,39,0,0,1.796999,70.08,70.08,Po
+Change in Dividend Accruals,Data,Stocks,USD,TUA,2026-03-25,2026-03-26,2026-03-31,835.7311,0,0,0.05,41.79,41.79,Po
+Change in Dividend Accruals,Data,Stocks,USD,TUA,2026-03-31,2026-03-26,2026-03-31,835.7311,0,0,0.05,-41.79,-41.79,Re
+Change in Dividend Accruals,Data,Stocks,USD,XOP,2026-03-20,2026-03-23,2026-03-25,150,0,0,0.708778,106.32,106.32,Po
+Change in Dividend Accruals,Data,Stocks,USD,XOP,2026-03-25,2026-03-23,2026-03-25,150,0,0,0.708778,-106.32,-106.32,Re
+Change in Dividend Accruals,Data,Total,,,,,,,0,0,,70.08,70.08,
+Change in Dividend Accruals,Data,Ending Dividend Accruals in USD,,,,,,,,,,,70.08,
+Borrow Fee Details,Header,Currency,Value Date,Symbol,Quantity,Price,Value,Fee Rate (%),Borrow Fee,Code
+Borrow Fee Details,Data,USD,2026-02-23,VALE,300,18,5400,0.4213,-0.06,Po
+Borrow Fee Details,Data,Total,,,,,,,-0.06,
+Stock Yield Enhancement Program Securities Lent Activity,Header,Asset Category,Currency,Symbol,Date,Description, ,Transaction ID,Quantity,Collateral Amount
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-11,New Loan Allocation, ,SLB.117971335,-276,6348
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-12,Loan Return Allocation, ,SLB.117971335,276,-6348
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-12,New Loan Allocation, ,SLB.118038476,-170,3740
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-13,Loan Return Allocation, ,SLB.118038476,170,-3740
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-23,New Loan Allocation, ,SLB.118500113,-638,14036
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-24,Loan Return Allocation, ,SLB.118500113,638,-14036
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-24,New Loan Allocation, ,SLB.118594544,-501,11022
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-25,Loan Return Allocation, ,SLB.118594544,501,-11022
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-25,New Loan Allocation, ,SLB.118664859,-300,6600
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-26,Loan Return Allocation, ,SLB.118664859,300,-6600
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-26,New Loan Allocation, ,SLB.118736126,-300,6600
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,TUA,2026-03-27,Loan Return Allocation, ,SLB.118736126,300,-6600
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,XOP,2026-03-02,Loan Return Allocation, ,SLB.117393600,13,-1989
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,XOP,2026-03-02,New Loan Allocation, ,SLB.117521003,-21,3297
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,XOP,2026-03-03,Loan Return Allocation, ,SLB.117521003,21,-3297
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,XOP,2026-03-03,New Loan Allocation, ,SLB.117521003,-28,4564
+Stock Yield Enhancement Program Securities Lent Activity,Data,Stocks,USD,XOP,2026-03-04,Loan Return Allocation, ,SLB.117521003,28,-4564
+Stock Yield Enhancement Program Securities Lent Activity,Data,Total,,,,,,,,-1989
+Stock Yield Enhancement Program Securities Lent Activity,Notes,"Important Notice re: SIPC Protection for Loans of Fully Paid and Excess Margin Securities:  Please be aware that if you execute loans of your fully paid or excess margin securities, the  provisions of the Securities Investor Protection Act of 1970 may not protect you with respect to the securities loan transaction.  Therefore, the collateral value credited to your account by Interactive Brokers (see above) may constitute the only source of satisfaction in the event that Interactive Brokers cannot return the securities."
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Header,Currency,Value Date,Symbol,Start Date,Quantity,Collateral Amount,Market-based Rate (%),SYEP Rate on Customer Collateral (%),SYEP Fee Earned by Customer,Code
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-06,TUA,2026-02-06,-373,8579,0.33,0.17,0.04,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-07,TUA,2026-02-06,-373,8579,0.33,0.17,0.04,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-08,TUA,2026-02-06,-373,8579,0.33,0.17,0.04,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-11,TUA,2026-02-11,-171,3933,0.24,0.12,0.02,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-12,TUA,2026-02-12,-276,6348,0.23,0.12,0.02,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-19,TUA,2026-02-19,-642,14766,0.39,0.2,0.08,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-20,TUA,2026-02-20,-358,8234,0.39,0.2,0.05,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-20,XOP,2026-02-20,-38,5890,1.01,0.51,0.09,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-21,TUA,2026-02-20,-358,8234,0.39,0.2,0.05,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-21,XOP,2026-02-20,-38,5890,1.01,0.51,0.09,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-22,TUA,2026-02-20,-358,8234,0.39,0.2,0.05,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-22,XOP,2026-02-20,-38,5890,1.01,0.51,0.09,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-23,XOP,2026-02-23,-31,4805,0.95,0.48,0.07,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-24,XOP,2026-02-24,-33,5049,0.99,0.5,0.07,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-25,XOP,2026-02-25,-32,4896,1.02,0.51,0.07,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-26,XOP,2026-02-26,-31,4712,1.05,0.53,0.07,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-27,XOP,2026-02-27,-13,1989,1.05,0.53,0.03,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,USD,2026-02-28,XOP,2026-02-27,-13,1989,1.05,0.53,0.03,Po
+Stock Yield Enhancement Program Securities Lent Fee Earned Details,Data,Total,,,,,,,,1,
+Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Security ID,Underlying,Listing Exch,Multiplier,Type,Code
+Financial Instrument Information,Data,Stocks,BHP,BHP GROUP LTD-SPON ADR,4986,US0886061086,BHP,NYSE,1,ADR,
+Financial Instrument Information,Data,Stocks,QQQ,INVESCO QQQ TRUST SERIES 1,320227571,US46090E1038,QQQ,NASDAQ,1,ETF,
+Financial Instrument Information,Data,Stocks,SPY,SS SPDR S&P 500 ETF TRUST-US,756733,US78462F1030,SPY,ARCA,1,ETF,
+Financial Instrument Information,Data,Stocks,TUA,SIM ST TREAS FUT STRAT ETF,597669735,US82889N6572,TUA,ARCA,1,ETF,
+Financial Instrument Information,Data,Stocks,USO,UNITED STATES OIL FUND LP,418893644,US91232N2071,USO,ARCA,1,ETF,
+Financial Instrument Information,Data,Stocks,XOP,SS SPDR S&P OG EXP & PROD,413951498,US78468R5569,XOP,ARCA,1,ETF,
+Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Underlying,Listing Exch,Multiplier,Expiry,Delivery Month,Type,Strike,Code
+Financial Instrument Information,Data,Equity and Index Options,AA    270115C00030000,AA 15JAN27 30 C,728818944,AA,CBOE,100,2027-01-15,2027-01,C,30,
+Financial Instrument Information,Data,Equity and Index Options,BA    270115C00210000,BA 15JAN27 210 C,728838500,BA,CBOE,100,2027-01-15,2027-01,C,210,
+Financial Instrument Information,Data,Equity and Index Options,BHP   260320P00077500,BHP 20MAR26 77.5 P,850071587,BHP,CBOE,100,2026-03-20,2026-03,P,77.5,
+Financial Instrument Information,Data,Equity and Index Options,BHP   270115C00042500,BHP 15JAN27 42.5 C,728841190,BHP,CBOE,100,2027-01-15,2027-01,C,42.5,
+Financial Instrument Information,Data,Equity and Index Options,BTU   270115C00015000,BTU 15JAN27 15 C,728845844,BTU,CBOE,100,2027-01-15,2027-01,C,15,
+Financial Instrument Information,Data,Equity and Index Options,CCJ   270115C00090000,CCJ 15JAN27 90 C,744129142,CCJ,CBOE,100,2027-01-15,2027-01,C,90,
+Financial Instrument Information,Data,Equity and Index Options,GDX   270115C00095000,GDX 15JAN27 95 C,776812815,GDX,CBOE,100,2027-01-15,2027-01,C,95,
+Financial Instrument Information,Data,Equity and Index Options,GLD   270115C00410000,GLD 15JAN27 410 C,769169487,GLD,CBOE,100,2027-01-15,2027-01,C,410,
+Financial Instrument Information,Data,Equity and Index Options,GLD   270115C00480000,GLD 15JAN27 480 C,806089172,GLD,CBOE,100,2027-01-15,2027-01,C,480,
+Financial Instrument Information,Data,Equity and Index Options,GLD   270115C00600000,GLD 15JAN27 600 C,806089734,GLD,CBOE,100,2027-01-15,2027-01,C,600,
+Financial Instrument Information,Data,Equity and Index Options,GLD   270115C00900000,GLD 15JAN27 900 C,849674896,GLD,CBOE,100,2027-01-15,2027-01,C,900,
+Financial Instrument Information,Data,Equity and Index Options,MOS   270115C00030000,MOS 15JAN27 30 C,728917216,MOS,CBOE,100,2027-01-15,2027-01,C,30,
+Financial Instrument Information,Data,Equity and Index Options,OIH   260320C00425000,OIH 20MAR26 425 C,848929721,OIH,CBOE,100,2026-03-20,2026-03,C,425,
+Financial Instrument Information,Data,Equity and Index Options,OIH   260320P00370000,OIH 20MAR26 370 P,846485383,OIH,CBOE,100,2026-03-20,2026-03,P,370,
+Financial Instrument Information,Data,Equity and Index Options,OIH   270115C00200000,OIH 15JAN27 200 C,728921688,OIH,CBOE,100,2027-01-15,2027-01,C,200,
+Financial Instrument Information,Data,Equity and Index Options,PG    260402P00152500,PG 02APR26 152.5 P,854261989,PG,CBOE,100,2026-04-02,2026-04,P,152.5,
+Financial Instrument Information,Data,Equity and Index Options,PG    260417C00145000,PG 17APR26 145 C,807099522,PG,CBOE,100,2026-04-17,2026-04,C,145,
+Financial Instrument Information,Data,Equity and Index Options,PG    260417C00160000,PG 17APR26 160 C,807099729,PG,CBOE,100,2026-04-17,2026-04,C,160,
+Financial Instrument Information,Data,Equity and Index Options,SLV   260417P00050000,SLV 17APR26 50 P,813174017,SLV,CBOE,100,2026-04-17,2026-04,P,50,
+Financial Instrument Information,Data,Equity and Index Options,SLV   260417P00055000,SLV 17APR26 55 P,813174042,SLV,CBOE,100,2026-04-17,2026-04,P,55,
+Financial Instrument Information,Data,Equity and Index Options,SLV   270115C00063000,SLV 15JAN27 63 C,835966369,SLV,CBOE,100,2027-01-15,2027-01,C,63,
+Financial Instrument Information,Data,Equity and Index Options,SLV   270115C00080000,SLV 15JAN27 80 C,835966609,SLV,CBOE,100,2027-01-15,2027-01,C,80,
+Financial Instrument Information,Data,Equity and Index Options,SLV   270115C00150000,SLV 15JAN27 150 C,845726916,SLV,CBOE,100,2027-01-15,2027-01,C,150,
+Financial Instrument Information,Data,Equity and Index Options,SPY   260618P00580000,SPY 18JUN26 580 P,701332934,SPY,CBOE,100,2026-06-18,2026-06,P,580,
+Financial Instrument Information,Data,Equity and Index Options,SPY   260618P00600000,SPY 18JUN26 600 P,701332951,SPY,CBOE,100,2026-06-18,2026-06,P,600,
+Financial Instrument Information,Data,Equity and Index Options,SPY   260618P00650000,SPY 18JUN26 650 P,701332991,SPY,CBOE,100,2026-06-18,2026-06,P,650,
+Financial Instrument Information,Data,Equity and Index Options,SPY   261218P00690000,SPY 18DEC26 690 P,674453151,SPY,CBOE,100,2026-12-18,2026-12,P,690,
+Financial Instrument Information,Data,Equity and Index Options,TECK  270115C00043000,TECK 15JAN27 43 C,728999101,TECK,CBOE,100,2027-01-15,2027-01,C,43,
+Financial Instrument Information,Data,Equity and Index Options,TLT   270115C00090000,TLT 15JAN27 90 C,728976661,TLT,CBOE,100,2027-01-15,2027-01,C,90,
+Financial Instrument Information,Data,Equity and Index Options,USO   260320C00095000,USO 20MAR26 95 C,848523885,USO,CBOE,100,2026-03-20,2026-03,C,95,
+Financial Instrument Information,Data,Equity and Index Options,USO   260320C00120000,USO 20MAR26 120 C,856813356,USO,CBOE,100,2026-03-20,2026-03,C,120,
+Financial Instrument Information,Data,Equity and Index Options,USO   260320C00125000,USO 20MAR26 125 C,860581786,USO,CBOE,100,2026-03-20,2026-03,C,125,
+Financial Instrument Information,Data,Equity and Index Options,USO   260320C00145000,USO 20MAR26 145 C,861597422,USO,CBOE,100,2026-03-20,2026-03,C,145,
+Financial Instrument Information,Data,Equity and Index Options,USO   260320P00086000,USO 20MAR26 86 P,846573384,USO,CBOE,100,2026-03-20,2026-03,P,86,
+Financial Instrument Information,Data,Equity and Index Options,USO   260320P00105000,USO 20MAR26 105 P,848932904,USO,CBOE,100,2026-03-20,2026-03,P,105,
+Financial Instrument Information,Data,Equity and Index Options,USO   270115C00067000,USO 15JAN27 67 C,728976709,USO,CBOE,100,2027-01-15,2027-01,C,67,
+Financial Instrument Information,Data,Equity and Index Options,VALE  270115C00010000,VALE 15JAN27 10 C,728972140,VALE,CBOE,100,2027-01-15,2027-01,C,10,
+Financial Instrument Information,Data,Equity and Index Options,WY    270115C00025000,WY 15JAN27 25 C,814384430,WY,CBOE,100,2027-01-15,2027-01,C,25,
+Financial Instrument Information,Data,Equity and Index Options,XOP   260320C00170000,XOP 20MAR26 170 C,770829077,XOP,CBOE,100,2026-03-20,2026-03,C,170,
+Financial Instrument Information,Data,Equity and Index Options,XOP   260320P00155000,XOP 20MAR26 155 P,770412813,XOP,CBOE,100,2026-03-20,2026-03,P,155,
+Financial Instrument Information,Data,Equity and Index Options,XOP   260417C00200000,XOP 17APR26 200 C,852810375,XOP,CBOE,100,2026-04-17,2026-04,C,200,
+Financial Instrument Information,Data,Equity and Index Options,XOP   260417P00180000,XOP 17APR26 180 P,852812604,XOP,CBOE,100,2026-04-17,2026-04,P,180,
+Codes,Header,Code,Meaning,Code (Cont.),Meaning (Cont.)
+Codes,Data,A,Assignment
+Codes,Data,ADR,ADR Fee Accrual
+Codes,Data,AEx,Automatic exercise for dividend-related recommendation.
+Codes,Data,AFx,AutoFX conversion resulting from trading
+Codes,Data,Adj,Adjustment
+Codes,Data,Al,Allocation
+Codes,Data,Aw,Away Trade
+Codes,Data,B,Automatic Buy-in
+Codes,Data,Bo,Direct Borrow
+Codes,Data,C,Closing Trade
+Codes,Data,CD,Cash Delivery
+Codes,Data,CP,Complex Position
+Codes,Data,Ca,Cancelled
+Codes,Data,Co,Corrected Trade
+Codes,Data,Cx,Part or all of this transaction was a Crossing executed as dual agent by IB for two IB customers
+Codes,Data,DT,Discounted Trade
+Codes,Data,De,Delivery or Conversion Action
+Codes,Data,ETF,ETF Creation/Redemption
+Codes,Data,Ep,Resulted from an Expired Position
+Codes,Data,Ex,Exercise
+Codes,Data,FP,The fractional portion of this trade was executed against IB or an affiliate.
+Codes,Data,FPA,The fractional portion of this trade was executed against IB or an affiliate. IB acted as agent for the whole share portion of this trade.
+Codes,Data,G,Trade in Guaranteed Account Segment
+Codes,Data,GEA,Exercise or Assignment resulting from offsetting positions
+Codes,Data,HC,Highest Cost tax basis election
+Codes,Data,HFI,Investment Transferred to Hedge Fund
+Codes,Data,HFR,Redemption from Hedge Fund
+Codes,Data,I,Internal Transfer
+Codes,Data,IA,The transaction was executed against IB or an affiliate
+Codes,Data,IM,A portion of the order was executed against IB or an affiliate; IB acted as agent on a portion.
+Codes,Data,INV,Investment Transfer from Investor
+Codes,Data,IPO,This transaction was executed as part of an IPO in which IB was a member of the selling group and is classified as a Principal trade.
+Codes,Data,L,Ordered by IB (Margin Violation)
+Codes,Data,LD,Adjusted by Loss Disallowed from Wash Sale
+Codes,Data,LF,Liquidation of fractional position by IB
+Codes,Data,LI,"Last In, First Out (LIFO) tax basis election"
+Codes,Data,LT,Long Term P/L
+Codes,Data,Lo,Direct Loan
+Codes,Data,M,Entered manually by IB
+Codes,Data,MEx,Manual exercise for dividend-related recommendation.
+Codes,Data,ML,Maximize Losses tax basis election
+Codes,Data,MLG,Maximize Long Term Gain tax basis election
+Codes,Data,MLL,Maximize Long Term Loss tax basis election
+Codes,Data,MSG,Maximize Short Term Gain tax basis election
+Codes,Data,MSL,Maximize Short Term Loss tax basis election
+Codes,Data,O,Opening Trade
+Codes,Data,Off,Yes and No contracts offset to $1.00 cash settlement
+Codes,Data,P,Partial Execution
+Codes,Data,PE,Perpetual Investment
+Codes,Data,PI,Price Improvement
+Codes,Data,PTA,Post Trade Allocation
+Codes,Data,Po,Interest or Dividend Accrual Posting
+Codes,Data,Pr,Part or all of this transaction was executed by the Exchange as a Crossing by IB against an IB affiliate and is therefore classified as a Principal and not an agency trade
+Codes,Data,R,Dividend Reinvestment
+Codes,Data,RED,Redemption to Investor
+Codes,Data,RI,Recurring Investment
+Codes,Data,RP,"IB acted as agent for the fractional share portion of this trade, which was executed by an IB affiliate as riskless principal."
+Codes,Data,RPA,IB acted as agent for both the fractional share portion and the whole share portion of this trade; the fractional share portion was executed by an IB Affiliate as riskless principal.
+Codes,Data,Rb,Rebill
+Codes,Data,Re,Interest or Dividend Accrual Reversal
+Codes,Data,Ri,Reimbursement
+Codes,Data,S0,Contract settled to zero value
+Codes,Data,S1,Contract settled to $1.00
+Codes,Data,SF,Trade is subject to IBKR Lite Surcharge Fee if volume of such trades exceeds 10% of the total monthly Lite trade volume
+Codes,Data,SI,This order was solicited by Interactive Brokers
+Codes,Data,SL,Specific Lot tax basis election
+Codes,Data,SO,This order was marked as solicited by your Introducing Broker
+Codes,Data,SS,Customer designated this trade for shortened settlement and so is subject to execution at prices above the prevailing market
+Codes,Data,ST,Short Term P/L
+Codes,Data,T,Transfer
+Codes,Data,Un,Unvested shares from stock grant
+Codes,Data,XCH,Mutual Fund Exchange Transaction
+Notes/Legal Notes,Header,Type,Note
+Notes/Legal Notes,Data,Notes,"Stock exchange transactions generally settle on the trade date plus one business day (T+1). Options, futures and US open-end mutual fund transactions also settle on trade date plus one business day. Some exchanges and other transaction types may have longer or shorter settlement periods. Ending settled cash reflects the cash that has actually settled."
+Notes/Legal Notes,Data,Notes,Initial and maintenance margin requirements are available within the Account Window of the Trader Workstation.
+Notes/Legal Notes,Data,Notes,"Interactive Brokers LLC receives compensation from fund companies in connection with the purchase and holding of fund shares by customers of Interactive Brokers LLC. Such compensation includes, but is not limited to, Rule 12b-1 fees that are paid out of the funds assets. The source and amount of any remuneration received by Interactive Brokers LLC in connection with a transaction will be furnished upon written request of the customer.  IB may share a portion of the compensation received from fund companies with your independent advisor or introducing broker."
+Notes/Legal Notes,Data,Notes,"Quantities preceded by a ""-"" sign indicate sell transactions. Other transactions are purchases. "
+Notes/Legal Notes,Data,Notes,"IB acts as agent in executing the fractional share portion of your order. In certain circumstances, IB routes the fractional portion of your order to an affiliate, which may execute the fractional portion of the order as principal. In such circumstances, this is indicated by the codes associated with the trade. If an IB affiliate acts as principal in executing any fractional share portion of your order, the order will be executed at the price displayed for the opposite side of the NBBO from your order (the offer if you are buying and the bid if you are selling) at the time of execution. If an IB affiliate is acting as riskless principal in connection with filling the fractional share portion of your order, the affiliate will execute the fractional share portion of your order at the price it receives for the execution of the whole share."
+Notes/Legal Notes,Data,Notes,"In case of partial executions, commissions are charged on the total quantity executed on the original order. The commission is displayed on the first partial execution only."
+Notes/Legal Notes,Data,Notes,Trade execution times are displayed in Eastern Time.
+Notes/Legal Notes,Data,Notes,Applicable regulatory fees for your transactions are available on the IB website at www.interactivebrokers.com/en/accounts/fees/exchangeAndRegulatoryFees.php.
+Notes/Legal Notes,Data,Notes,"Borrow Fee Rate represents the cost to borrow stock expressed in percent per annum. It is applied to the collateral value on the stock borrow contract and is separate from any interest earned on credit cash balances. Similarly, Loan Fee Rate represents the benefit to lend stock. A positive rate indicates a cost to the borrower/benefit to the lender and a negative rate indicates a benefit to the borrower/cost to the lender. In general, the fee rates for hard-to-borrow stocks are higher than for normal availability stocks."
+Notes/Legal Notes,Data,Notes,Interest Rate on Customer Collateral represents the interest paid on the collateral posted to the customer's account and received from lending stock.  A positive rate indicates a benefit to the lender.
+Notes/Legal Notes,Data,Notes,"The closing prices on this Activity Statement are indicative and may come from third-party sources. Interactive Brokers does not warrant the accuracy of the prices provided by third-party sources. Due to time zone differences, certain non-US mutual funds may deliver closing prices after the Activity Statement has been produced and the closing prices for such funds will reflect the previous day's price."
+Notes/Legal Notes,Data,Notes,All Market Data and Research services are provided through Global Financial Information Services (GmbH).
+Notes/Legal Notes,Data,Notes,"Market data is provided by Global Financial Information Services (GmbH). Your local broker collects amounts owed for fees and tax for such data on behalf of Global Financial Information Services (GmbH). Note, you are responsible for any applicable taxes relating to the provision of these services."
+Notes/Legal Notes,Data,Notes,RUS denotes Ruble balances that have been restricted by Russian authorities.
+Notes/Legal Notes,Data,Mutual Fund Notes,"All purchase and sales of mutual funds are calculated against the published NAV (Net Asset Value) of the underlying fund and is displayed on this confirmation as the ""C. Price"" (Closing Price). Due to any fees charged by a fund and/or any share rounding, the net price you pay may vary from the published NAV and is shown on this confirmation as the ""T. Price"" (Trade Price)."
+Notes/Legal Notes,Data,Fixed Income Notes,"Call features for bonds or preferred stocks may affect the yield. For zero coupon, compound interest and multiplier securities, there are no periodic payments and securities may be callable below maturity value without notice to holder unless registered. For asset-backed securities, the actual yield may vary depending on the speed at which the underlying note is pre-paid. For additional information regarding bond yield, please contact the IB Help Desk at: ibkr.com/help. If this debt security is unrated by a nationally recognized statistical rating organization, it may pose a high risk of default. You should consult an independent advisor to determine whether unrated bonds are appropriate for your portfolio in light of your goals and your financial circumstances. Fees charged by bond trading centers are included in the cost of bond transactions."
+Notes/Legal Notes,Data,Legal Notes,"Please promptly report any inaccuracy or discrepancy in this statement, or in your account. Contact the IB Customer Service Department in writing using the form available on the IB website. You may also contact IB by phone, but if you report an error by phone, you should re-confirm such oral communication in writing in order to protect your rights, including rights under the Securities Investor Protection Act (SIPA).Interactive Brokers:Interactive Brokers LLC, www.interactivebrokers.com, 877-442-2757 (U.S.)Interactive Brokers (UK) (Ltd), www.interactivebrokers.co.uk, 00800-42-276537 (Intl)Interactive Brokers Canada Inc., www.interactivebrokers.ca, 877-745-4222 (Can.)"
+Notes/Legal Notes,Data,Legal Notes,"Unless otherwise noted, Interactive Brokers acted as agent in the execution of the above transactions. For those exchanges where IB is not a direct clearing member or custodian, IB may use one of the following clearing agents or sub-custodians: Interactive Brokers Australia Pty Limited; Interactive Brokers Canada Inc.; Interactive Brokers Hong Kong Limited; Interactive Brokers Ireland, Limited; Interactive Brokers Securities Japan, Inc.; Interactive Brokers (U.K.) Limited; IBKR Financial Services AG; ABN Amro Clearing Singapore Pte. Ltd.; Allfunds Bank, S.A.U.; Banco B3 S.A.; BBVA Bancomer, S.A.; BNP Securities Services, Milan Branch; BMO Bank N.A.; Citibank Europe plc; Skandinaviska Enskilda Banken AB (including select branches)."
+Notes/Legal Notes,Data,Legal Notes,"IB acts as agent or riskless principal in foreign currency exchange transactions and as riskless principal in spot precious metals transactions.  Such transactions are executed against an IB affiliate or a third party, which acts as principal in such transactions and may have a long or short position and may have profited or lost in connection with the transaction.  Foreign currency exchange and spot precious metals transactions executed by Customer through IB are not regulated or overseen by the SEC or the CFTC."
+Notes/Legal Notes,Data,Legal Notes,"IB accepts liquidity rebates or other order flow payments from Alternative Trading Systems, market makers and exchanges for certain orders in stocks. IB receives payment for some option orders pursuant to exchange-mandated marketing fee programs or other arrangements. The source and nature of any compensation received by IB in connection with any transaction is available upon written request of the customer. For further information, check the IB website and the Order Routing and Payment for Order Flow Disclosure provided when you opened your account and annually or visit ibkr.com/help.  "
+Notes/Legal Notes,Data,Legal Notes,"For security futures trades, if not already indicated on this statement, information about the time of any transaction, the identity of the counterparty to the transaction, and whether IB is acting as agent or principal, as agent for the counterparty, as agent for both parties to the contract, or as principal, and if acting as principal, whether the transaction was a block transaction or an exchange for physicals transaction, will be available upon written request of the customer."
+Notes/Legal Notes,Data,Legal Notes,Customer is requested to promptly advise Interactive Brokers of any material change in Customers investment objectives.
+Notes/Legal Notes,Data,Legal Notes,"A financial statement of Interactive Brokers LLC is available for your personal inspection at www.interactivebrokers.com or at its offices, or a copy of it will be mailed upon your written request."
+Notes/Legal Notes,Data,Legal Notes,"For trades executed on the ASX market, the ASX 24 market and the Cboe Australia market, this confirmation is issued subject to: (i) the Applicable Laws, the directions, decisions and requirements of the relevant market operator, the operating rules of the relevant market, the clearing rules and where relevant, the relevant settlement rules, (ii) the customs and usages of the relevant financial market, and (iii) the correction of errors and omissions. Trades in Cash Market Products (as that term is defined in the relevant ASIC market integrity rules) on ASX market and Cboe Australia are cleared by BNP Paribas, ARBN 149 440 291, AFSL 402467, who is a participant of ASX Clear Pty Ltd and ASX Settlement Pty Ltd. Trades in Derivative Products on ASX and all products on ASX 24 are cleared by Interactive Brokers Australia (“IBA”) as a participant of ASX Clear Pty Ltd and ASX Clear (Futures) Pty Ltd. If your transaction was a crossing transaction, IBA may have either acted on behalf of (i) both the buyer and seller of this transaction, or (ii) on behalf of the buyer or seller on one side of the transaction and acted as Principal on the other side. Under the Corporations Act 2001, where IBA enters into an exchange traded derivative on a customer's behalf, IBA is regarded as having issued the derivative to the customer."
+Notes/Legal Notes,Data,Legal Notes,"For All Options Trades Executed on the Stock Exchange of Hong Kong (""SEHK""): (a) Options can involve a high degree of risk and may not be suitable for every investor. Investors should ensure they understand those risks before participating in the options market. (b) All options contracts executed on the SEHK were executed by Interactive Brokers Hong Kong Limited on behalf of Interactive Brokers LLC. (c) In the event of a default committed by Interactive Brokers LLC resulting in the client suffering any pecuniary loss, the client shall have a right to claim under the Investor Compensation Fund established under the Hong Kong Securities and Futures Ordinance, subject to the terms of the Investor Compensation Fund from time to time. (d) All Exchange Traded Options Business made for or on behalf of a client shall be subject to the relevant provisions of the constitution, Rules of The Stock Exchange of Hong Kong Limited (""SEHK Rules""), regulations, the Articles, customs and usages of SEHK, the Options Trading Rules, the Clearing Rules of SEOCH, the CCASS Rules and the laws of Hong Kong, which shall be binding on both Interactive Brokers LLC and the client."
+Notes/Legal Notes,Data,Legal Notes,"Interactive Brokers LLC is a SIPC member. Deposits held away from Interactive Brokers LLC may not qualify under SIPC protection. Also, futures and options on futures are not covered by SIPC."
+Notes/Legal Notes,Data,,Interactive Brokers LLC is a SIPC Member

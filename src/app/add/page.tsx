@@ -1,12 +1,18 @@
 "use client";
 
-import TradeForm from "@/components/TradeForm";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useTrades } from "@/lib/TradeContext";
 
 export default function AddTradePage() {
-  return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Add Trade</h1>
-      <TradeForm />
-    </div>
-  );
+  const router = useRouter();
+  const { setShowTradeModal, setEditingTrade } = useTrades();
+
+  useEffect(() => {
+    setEditingTrade(null);
+    setShowTradeModal(true);
+    router.push("/");
+  }, [router, setShowTradeModal, setEditingTrade]);
+
+  return null;
 }

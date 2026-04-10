@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Nav from "@/components/Nav";
+import { TradeProvider } from "@/lib/TradeContext";
+import AppShell from "@/components/AppShell";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trading Journal",
-  description: "Track and analyze your trades",
+  title: "TradeJournal",
+  description: "Track, analyze, and improve your trading performance",
 };
 
 export default function RootLayout({
@@ -26,14 +27,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
-        <Nav />
-        <main className="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl mx-auto w-full">
-          {children}
-        </main>
+      <body className="min-h-full">
+        <TradeProvider>
+          <AppShell>{children}</AppShell>
+        </TradeProvider>
       </body>
     </html>
   );

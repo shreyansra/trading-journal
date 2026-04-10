@@ -8,57 +8,66 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ stats }: DashboardProps) {
-  const cards = [
-    {
-      label: "Total P&L",
-      value: formatCurrency(stats.totalPnl),
-      color: stats.totalPnl >= 0 ? "text-green" : "text-red",
-    },
-    {
-      label: "Win Rate",
-      value: formatPercent(stats.winRate),
-      color: stats.winRate >= 50 ? "text-green" : "text-red",
-    },
-    { label: "Total Trades", value: stats.totalTrades.toString(), color: "text-foreground" },
-    { label: "Open Trades", value: stats.openTrades.toString(), color: "text-accent" },
-    {
-      label: "Avg Win",
-      value: formatCurrency(stats.avgWin),
-      color: "text-green",
-    },
-    {
-      label: "Avg Loss",
-      value: formatCurrency(stats.avgLoss),
-      color: "text-red",
-    },
-    {
-      label: "Profit Factor",
-      value: stats.profitFactor === Infinity ? "∞" : stats.profitFactor.toFixed(2),
-      color: stats.profitFactor >= 1 ? "text-green" : "text-red",
-    },
-    {
-      label: "Largest Win",
-      value: formatCurrency(stats.largestWin),
-      color: "text-green",
-    },
-    {
-      label: "Largest Loss",
-      value: formatCurrency(stats.largestLoss),
-      color: "text-red",
-    },
-  ];
+  const wins = stats.closedTrades > 0
+    ? Math.round((stats.winRate / 100) * stats.closedTrades)
+    : 0;
+  const losses = stats.closedTrades - wins;
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-      {cards.map((card) => (
-        <div
-          key={card.label}
-          className="bg-card border border-card-border rounded-xl p-4"
-        >
-          <p className="text-xs text-muted mb-1">{card.label}</p>
-          <p className={`text-lg font-bold ${card.color}`}>{card.value}</p>
+    <div className="space-y-4">
+      {/* Top stats bar - matching StonkJournal's inline stats */}
+      <div className="flex flex-wrap items-center gap-3">
+        {/* Wins */}
+        <StatPill label="WINS" value={wins.toString()} color="text-green" />
+        <MiniPill value={formatPercent(stats.winRate)} color="bg-green/15 text-green" />
+
+        {/* Losses */}
+        <StatPill label="LOSSES" value={losses.toString()} color="text-red" />
+        <MiniPill
+          value={formatPercent(stats.closedTrades > 0 ? 100 - stats.winRate : 0)}
+          color="bg-red/15 text-red"
+        />
+
+        {/* Open */}
+        <StatPill label="OPEN" value={stats.openTrades.toString()} color="text-cyan" />
+
+        {/* Divider */}
+        <div className="w-px h-8 bg-card-border hidden sm:block" />
+
+        {/* AVG W */}
+        <StatPill label="AVG W" value={formatCurrency(stats.avgWin)} color="text-green" />
+
+        {/* AVG L */}
+        <StatPill label="AVG L" value={formatCurrency(stats.avgLoss)} color="text-red" />
+
+        {/* Divider */}
+        <div className="w-px h-8 bg-card-border hidden sm:block" />
+
+        {/* Big P&L display */}
+        <div className="ml-auto text-right">
+          <div className="text-xs text-muted uppercase tracking-wide">PnL</div>
+          <div className={`text-2xl font-bold ${stats.totalPnl >= 0 ? "text-green" : "text-red"}`}>
+            {formatCurrency(stats.totalPnl)}
+          </div>
         </div>
-      ))}
+      </div>
     </div>
+  );
+}
+
+function StatPill({ label, value, color }: { label: string; value: string; color: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs text-muted uppercase tracking-wide">{label}</span>
+      <span className={`text-sm font-bold ${color}`}>{value}</span>
+    </div>
+  );
+}
+
+function MiniPill({ value, color }: { value: string; color: string }) {
+  return (
+    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${color}`}>
+      {value}
+    </span>
   );
 }
