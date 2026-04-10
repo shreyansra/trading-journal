@@ -15,6 +15,7 @@
   --yellow: #f59e0b;
   --cyan: #06b6d4;
   --purple: #8b5cf6;
+  --orange: #f97316;
 }
 
 @theme inline {
@@ -32,25 +33,27 @@
   --color-yellow: var(--yellow);
   --color-cyan: var(--cyan);
   --color-purple: var(--purple);
+  --color-orange: var(--orange);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 .dark {
-  --background: #0b1120;
+  --background: #060b18;
   --foreground: #e2e8f0;
-  --card: #131c2e;
-  --card-border: #1e2d44;
-  --muted: #64748b;
+  --card: #0a1628;
+  --card-border: #142040;
+  --muted: #5a6a85;
   --accent: #3b82f6;
   --accent-hover: #60a5fa;
-  --green: #34d399;
-  --red: #f87171;
-  --sidebar-bg: #0f172a;
-  --sidebar-border: #1e2d44;
-  --yellow: #fbbf24;
-  --cyan: #22d3ee;
-  --purple: #a78bfa;
+  --green: #00e676;
+  --red: #ff5252;
+  --sidebar-bg: #070e1f;
+  --sidebar-border: #142040;
+  --yellow: #ffd740;
+  --cyan: #18ffff;
+  --purple: #b388ff;
+  --orange: #ff9100;
 }
 
 html {
@@ -76,11 +79,11 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--muted);
+  background: var(--card-border);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--foreground);
+  background: var(--muted);
 }
 
 /* Modal backdrop */
@@ -106,7 +109,60 @@ body {
 }
 .cal-cell:hover {
   transform: scale(1.15);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   z-index: 10;
   position: relative;
+}
+
+/* Tab active indicator */
+.tab-active {
+  position: relative;
+}
+.tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+/* Gauge / donut chart styles */
+.gauge-track {
+  stroke: var(--card-border);
+}
+.gauge-fill-green {
+  stroke: var(--green);
+  transition: stroke-dashoffset 0.6s ease;
+}
+.gauge-fill-red {
+  stroke: var(--red);
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+/* Slide panel animation */
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+.slide-panel {
+  animation: slideInRight 0.25s ease-out;
+}
+
+/* Streak ring animation */
+@keyframes drawRing {
+  from { stroke-dashoffset: 283; }
+}
+.streak-ring {
+  animation: drawRing 0.8s ease-out;
+}
+
+/* Table row hover */
+.trade-row {
+  transition: background-color 0.1s ease;
+}
+.trade-row:hover {
+  background-color: rgba(59, 130, 246, 0.04);
 }
