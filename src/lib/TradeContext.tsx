@@ -1,36 +1,43 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from "react";
 import { supabase } from "./supabase";
 import { Trade, Tag } from "./types";
 
-interface TradeContextType {
+interface Ctx {
   trades: Trade[];
   tags: Tag[];
   loading: boolean;
   refresh: () => Promise<void>;
-  showTradeModal: boolean;
-  setShowTradeModal: (v: boolean) => void;
+  showModal: boolean;
+  setShowModal: (v: boolean) => void;
   editingTrade: Trade | null;
   setEditingTrade: (t: Trade | null) => void;
 }
 
-const TradeContext = createContext<TradeContextType | null>(null);
+const TradeCtx = createContext<Ctx | null>(null);
 
 export function TradeProvider({ children }: { children: ReactNode }) {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showTradeModal, setShowTradeModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [editingTrade, setEditingTrade] = useState<Trade | null>(null);
 
   const refresh = useCallback(async () => {
-    const [tradesRes, tagsRes] = await Promise.all([
+    const [tr, tg] = await Promise.all([
       supabase.from("trades").select("*").order("entry_date", { ascending: false }),
       supabase.from("tags").select("*").order("name"),
     ]);
-    setTrades(tradesRes.data || []);
-    setTags(tagsRes.data || []);
+    setTrades(tr.data || []);
+    setTags(tg.data || []);
     setLoading(false);
   }, []);
 
@@ -39,25 +46,16 @@ export function TradeProvider({ children }: { children: ReactNode }) {
   }, [refresh]);
 
   return (
-    <TradeContext.Provider
-      value={{
-        trades,
-        tags,
-        loading,
-        refresh,
-        showTradeModal,
-        setShowTradeModal,
-        editingTrade,
-        setEditingTrade,
-      }}
+    <TradeCtx.Provider
+      value={{ trades, tags, loading, refresh, showModal, setShowModal, editingTrade, setEditingTrade }}
     >
       {children}
-    </TradeContext.Provider>
+    </TradeCtx.Provider>
   );
 }
 
 export function useTrades() {
-  const ctx = useContext(TradeContext);
-  if (!ctx) throw new Error("useTrades must be used within TradeProvider");
+  const ctx = useContext(TradeCtx);
+  if (!ctx) throw new Error("useTrades must be inside TradeProvider");
   return ctx;
 }

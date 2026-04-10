@@ -1,274 +1,203 @@
-import {
-  Trade,
-  DashboardStats,
-  CalendarDay,
-  HoldTimeData,
-  DayOfWeekData,
-  PnlDistributionBucket,
-} from "./types";
+import { Trade } from "./types";
 
-export function calculatePnl(
-  direction: "long" | "short",
-  entryPrice: number,
-  exitPrice: number,
-  quantity: number,
-  fees: number
-): number {
-  const raw =
-    direction === "long"
-      ? (exitPrice - entryPrice) * quantity
-      : (entryPrice - exitPrice) * quantity;
-  return raw - fees;
-}
-
-export function computeStats(trades: Trade[]): DashboardStats {
-  const closedTrades = trades.filter((t) => t.pnl !== null);
-  const openTrades = trades.filter((t) => t.pnl === null);
-  const wins = closedTrades.filter((t) => t.pnl! > 0);
-  const losses = closedTrades.filter((t) => t.pnl! <= 0);
-
-  const totalPnl = closedTrades.reduce((sum, t) => sum + t.pnl!, 0);
-  const totalWins = wins.reduce((sum, t) => sum + t.pnl!, 0);
-  const totalLosses = Math.abs(losses.reduce((sum, t) => sum + t.pnl!, 0));
-
-  // Streaks
-  const sortedClosed = [...closedTrades].sort(
-    (a, b) => new Date(a.exit_date!).getTime() - new Date(b.exit_date!).getTime()
-  );
-
-  let currentStreak: { type: "win" | "loss" | "none"; count: number } = {
-    type: "none",
-    count: 0,
-  };
-  let longestWinStreak = 0;
-  let longestLossStreak = 0;
-  let tempWinStreak = 0;
-  let tempLossStreak = 0;
-
-  for (const t of sortedClosed) {
-    if (t.pnl! > 0) {
-      tempWinStreak++;
-      tempLossStreak = 0;
-      if (tempWinStreak > longestWinStreak) longestWinStreak = tempWinStreak;
-    } else {
-      tempLossStreak++;
-      tempWinStreak = 0;
-      if (tempLossStreak > longestLossStreak) longestLossStreak = tempLossStreak;
-    }
-  }
-
-  if (sortedClosed.length > 0) {
-    const last = sortedClosed[sortedClosed.length - 1];
-    if (last.pnl! > 0) {
-      let count = 0;
-      for (let i = sortedClosed.length - 1; i >= 0; i--) {
-        if (sortedClosed[i].pnl! > 0) count++;
-        else break;
-      }
-      currentStreak = { type: "win", count };
-    } else {
-      let count = 0;
-      for (let i = sortedClosed.length - 1; i >= 0; i--) {
-        if (sortedClosed[i].pnl! <= 0) count++;
-        else break;
-      }
-      currentStreak = { type: "loss", count };
-    }
-  }
-
-  // Hold time
-  const holdTimes = closedTrades
-    .filter((t) => t.entry_date && t.exit_date)
-    .map((t) => {
-      const ms = new Date(t.exit_date!).getTime() - new Date(t.entry_date).getTime();
-      return ms / (1000 * 60 * 60);
-    });
-  const avgHoldHours =
-    holdTimes.length > 0 ? holdTimes.reduce((a, b) => a + b, 0) / holdTimes.length : 0;
-
-  // Period P&L
-  const now = new Date();
-  const todayStr = now.toISOString().slice(0, 10);
-  const todayPnl = closedTrades
-    .filter((t) => t.exit_date?.slice(0, 10) === todayStr)
-    .reduce((sum, t) => sum + t.pnl!, 0);
-
-  const weekAgo = new Date(now);
-  weekAgo.setDate(weekAgo.getDate() - 7);
-  const weekPnl = closedTrades
-    .filter((t) => t.exit_date && new Date(t.exit_date) >= weekAgo)
-    .reduce((sum, t) => sum + t.pnl!, 0);
-
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  const monthPnl = closedTrades
-    .filter((t) => t.exit_date && new Date(t.exit_date) >= monthStart)
-    .reduce((sum, t) => sum + t.pnl!, 0);
-
-  // Expectancy & risk/reward
-  const winRate = closedTrades.length > 0 ? (wins.length / closedTrades.length) * 100 : 0;
-  const avgWin = wins.length > 0 ? totalWins / wins.length : 0;
-  const avgLoss = losses.length > 0 ? totalLosses / losses.length : 0;
-  const expectancy =
-    closedTrades.length > 0
-      ? (winRate / 100) * avgWin - ((100 - winRate) / 100) * avgLoss
-      : 0;
-  const avgRiskReward = avgLoss > 0 ? avgWin / avgLoss : 0;
-
-  return {
-    totalTrades: trades.length,
-    openTrades: openTrades.length,
-    closedTrades: closedTrades.length,
-    totalPnl,
-    winRate,
-    avgWin,
-    avgLoss,
-    profitFactor: totalLosses > 0 ? totalWins / totalLosses : totalWins > 0 ? Infinity : 0,
-    largestWin: wins.length > 0 ? Math.max(...wins.map((t) => t.pnl!)) : 0,
-    largestLoss: losses.length > 0 ? Math.min(...losses.map((t) => t.pnl!)) : 0,
-    currentStreak,
-    longestWinStreak,
-    longestLossStreak,
-    avgHoldTime: formatHoldTime(avgHoldHours),
-    expectancy,
-    avgRiskReward,
-    todayPnl,
-    weekPnl,
-    monthPnl,
-  };
-}
-
-function formatHoldTime(hours: number): string {
-  if (hours === 0) return "N/A";
-  if (hours < 1) return `${Math.round(hours * 60)}m`;
-  if (hours < 24) return `${hours.toFixed(1)}h`;
-  const days = Math.floor(hours / 24);
-  const remainingHours = Math.round(hours % 24);
-  return remainingHours > 0 ? `${days}d ${remainingHours}h` : `${days}d`;
-}
-
-export function formatCurrency(value: number): string {
-  const abs = Math.abs(value);
-  const formatted = new Intl.NumberFormat("en-US", {
+// ── Formatting ──────────────────────────────────────────────
+export function fmtCurrency(n: number): string {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 2,
-  }).format(abs);
-  return value < 0 ? `-${formatted}` : formatted;
+  }).format(n);
 }
 
-export function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-US", {
+export function fmtPct(n: number): string {
+  return `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
+}
+
+export function fmtDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
     year: "numeric",
+  });
+}
+
+export function fmtDateShort(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
   });
 }
 
-export function formatPercent(value: number): string {
-  return `${value.toFixed(1)}%`;
+// ── PnL calc ────────────────────────────────────────────────
+export function calcPnl(
+  dir: "long" | "short",
+  entry: number,
+  exit: number,
+  qty: number,
+  fees: number,
+): number {
+  const raw = dir === "long" ? (exit - entry) * qty : (entry - exit) * qty;
+  return raw - fees;
 }
 
-export function getEquityCurve(trades: Trade[]): { date: string; equity: number }[] {
-  const closed = trades
-    .filter((t) => t.exit_date && t.pnl !== null)
+// ── Hold time ───────────────────────────────────────────────
+export function holdDuration(entryIso: string, exitIso: string): string {
+  const ms = new Date(exitIso).getTime() - new Date(entryIso).getTime();
+  const hrs = ms / 3_600_000;
+  if (hrs < 1) return `${Math.round(hrs * 60)}m`;
+  if (hrs < 24) return `${hrs.toFixed(1)}h`;
+  const d = Math.floor(hrs / 24);
+  const rem = Math.round(hrs % 24);
+  return rem > 0 ? `${d}d ${rem}h` : `${d}d`;
+}
+
+// ── Return % ────────────────────────────────────────────────
+export function returnPct(t: Trade): number | null {
+  if (t.pnl == null || t.entry_price === 0 || t.quantity === 0) return null;
+  return (t.pnl / (t.entry_price * t.quantity)) * 100;
+}
+
+// ── Stats ───────────────────────────────────────────────────
+export interface Stats {
+  totalTrades: number;
+  openTrades: number;
+  closedTrades: number;
+  totalPnl: number;
+  totalDeposits: number;
+  totalCommissions: number;
+  winRate: number;
+  avgWin: number;
+  avgLoss: number;
+  profitFactor: number;
+  bestTrade: number;
+  worstTrade: number;
+  longestWinStreak: number;
+  longestLoseStreak: number;
+  currentStreak: { type: "win" | "loss" | "none"; count: number };
+  avgHoldTime: string;
+  expectancy: number;
+  longPnl: number;
+  shortPnl: number;
+  avgTradesPerDay: number;
+}
+
+export function computeStats(trades: Trade[]): Stats {
+  const closed = trades.filter((t) => t.pnl != null);
+  const open = trades.filter((t) => t.pnl == null);
+  const wins = closed.filter((t) => t.pnl! > 0);
+  const losses = closed.filter((t) => t.pnl! <= 0);
+
+  const totalPnl = closed.reduce((s, t) => s + t.pnl!, 0);
+  const totalWins = wins.reduce((s, t) => s + t.pnl!, 0);
+  const totalLosses = Math.abs(losses.reduce((s, t) => s + t.pnl!, 0));
+  const totalCommissions = trades.reduce((s, t) => s + t.fees, 0);
+
+  // streaks
+  const sorted = [...closed].sort(
+    (a, b) => new Date(a.exit_date!).getTime() - new Date(b.exit_date!).getTime(),
+  );
+  let maxW = 0, maxL = 0, cW = 0, cL = 0;
+  for (const t of sorted) {
+    if (t.pnl! > 0) { cW++; cL = 0; maxW = Math.max(maxW, cW); }
+    else { cL++; cW = 0; maxL = Math.max(maxL, cL); }
+  }
+  let currentStreak: Stats["currentStreak"] = { type: "none", count: 0 };
+  if (sorted.length > 0) {
+    const last = sorted[sorted.length - 1];
+    if (last.pnl! > 0) {
+      let c = 0;
+      for (let i = sorted.length - 1; i >= 0 && sorted[i].pnl! > 0; i--) c++;
+      currentStreak = { type: "win", count: c };
+    } else {
+      let c = 0;
+      for (let i = sorted.length - 1; i >= 0 && sorted[i].pnl! <= 0; i--) c++;
+      currentStreak = { type: "loss", count: c };
+    }
+  }
+
+  // hold time
+  const holds = closed
+    .filter((t) => t.entry_date && t.exit_date)
+    .map((t) => (new Date(t.exit_date!).getTime() - new Date(t.entry_date).getTime()) / 3_600_000);
+  const avgH = holds.length > 0 ? holds.reduce((a, b) => a + b, 0) / holds.length : 0;
+
+  // long / short
+  const longPnl = closed.filter((t) => t.direction === "long").reduce((s, t) => s + t.pnl!, 0);
+  const shortPnl = closed.filter((t) => t.direction === "short").reduce((s, t) => s + t.pnl!, 0);
+
+  const winRate = closed.length > 0 ? (wins.length / closed.length) * 100 : 0;
+  const avgWin = wins.length > 0 ? totalWins / wins.length : 0;
+  const avgLoss = losses.length > 0 ? totalLosses / losses.length : 0;
+
+  // avg trades per day
+  const days = new Set(closed.map((t) => t.exit_date!.slice(0, 10)));
+
+  return {
+    totalTrades: trades.length,
+    openTrades: open.length,
+    closedTrades: closed.length,
+    totalPnl,
+    totalDeposits: 0,
+    totalCommissions,
+    winRate,
+    avgWin,
+    avgLoss,
+    profitFactor: totalLosses > 0 ? totalWins / totalLosses : totalWins > 0 ? Infinity : 0,
+    bestTrade: wins.length > 0 ? Math.max(...wins.map((t) => t.pnl!)) : 0,
+    worstTrade: losses.length > 0 ? Math.min(...losses.map((t) => t.pnl!)) : 0,
+    longestWinStreak: maxW,
+    longestLoseStreak: maxL,
+    currentStreak,
+    avgHoldTime: avgH === 0 ? "N/A" : holdDuration(new Date(0).toISOString(), new Date(avgH * 3_600_000).toISOString()),
+    expectancy: closed.length > 0 ? (winRate / 100) * avgWin - ((100 - winRate) / 100) * avgLoss : 0,
+    longPnl,
+    shortPnl,
+    avgTradesPerDay: days.size > 0 ? closed.length / days.size : 0,
+  };
+}
+
+// ── Equity curve ────────────────────────────────────────────
+export function equityCurve(trades: Trade[]): { date: string; equity: number }[] {
+  const sorted = trades
+    .filter((t) => t.exit_date && t.pnl != null)
     .sort((a, b) => new Date(a.exit_date!).getTime() - new Date(b.exit_date!).getTime());
-
-  let cumulative = 0;
-  return closed.map((t) => {
-    cumulative += t.pnl!;
-    return { date: t.exit_date!, equity: cumulative };
+  let cum = 0;
+  return sorted.map((t) => {
+    cum += t.pnl!;
+    return { date: t.exit_date!, equity: cum };
   });
 }
 
-export function getMonthlyPnl(trades: Trade[]): { month: string; pnl: number }[] {
-  const closed = trades.filter((t) => t.exit_date && t.pnl !== null);
-  const monthly: Record<string, number> = {};
-
-  closed.forEach((t) => {
-    const d = new Date(t.exit_date!);
-    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-    monthly[key] = (monthly[key] || 0) + t.pnl!;
-  });
-
-  return Object.entries(monthly)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([month, pnl]) => ({ month, pnl }));
+// ── Calendar data ───────────────────────────────────────────
+export interface CalDay {
+  date: string;
+  pnl: number;
+  count: number;
 }
 
-export function getCalendarData(trades: Trade[]): CalendarDay[] {
-  const closed = trades.filter((t) => t.exit_date && t.pnl !== null);
-  const dailyMap: Record<string, { pnl: number; count: number }> = {};
-
-  closed.forEach((t) => {
-    const date = t.exit_date!.slice(0, 10);
-    if (!dailyMap[date]) dailyMap[date] = { pnl: 0, count: 0 };
-    dailyMap[date].pnl += t.pnl!;
-    dailyMap[date].count++;
-  });
-
-  return Object.entries(dailyMap)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([date, data]) => ({ date, pnl: data.pnl, tradeCount: data.count }));
-}
-
-export function getHoldTimeData(trades: Trade[]): HoldTimeData[] {
-  return trades
-    .filter((t) => t.exit_date && t.pnl !== null)
-    .map((t) => {
-      const ms = new Date(t.exit_date!).getTime() - new Date(t.entry_date).getTime();
-      return {
-        ticker: t.ticker,
-        holdHours: ms / (1000 * 60 * 60),
-        pnl: t.pnl!,
-      };
-    });
-}
-
-export function getDayOfWeekData(trades: Trade[]): DayOfWeekData[] {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const dayData: Record<number, { totalPnl: number; wins: number; total: number }> = {};
-
-  for (let i = 0; i < 7; i++) {
-    dayData[i] = { totalPnl: 0, wins: 0, total: 0 };
-  }
-
+export function calendarData(trades: Trade[]): CalDay[] {
+  const map: Record<string, { pnl: number; count: number }> = {};
   trades
-    .filter((t) => t.exit_date && t.pnl !== null)
+    .filter((t) => t.exit_date && t.pnl != null)
     .forEach((t) => {
-      const dayIndex = new Date(t.exit_date!).getDay();
-      dayData[dayIndex].totalPnl += t.pnl!;
-      dayData[dayIndex].total++;
-      if (t.pnl! > 0) dayData[dayIndex].wins++;
+      const d = t.exit_date!.slice(0, 10);
+      if (!map[d]) map[d] = { pnl: 0, count: 0 };
+      map[d].pnl += t.pnl!;
+      map[d].count++;
     });
-
-  return days.map((day, i) => ({
-    day,
-    avgPnl: dayData[i].total > 0 ? dayData[i].totalPnl / dayData[i].total : 0,
-    tradeCount: dayData[i].total,
-    winRate: dayData[i].total > 0 ? (dayData[i].wins / dayData[i].total) * 100 : 0,
-  }));
+  return Object.entries(map)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([date, v]) => ({ date, ...v }));
 }
 
-export function getPnlDistribution(trades: Trade[]): PnlDistributionBucket[] {
-  const pnls = trades.filter((t) => t.pnl !== null).map((t) => t.pnl!);
-  if (pnls.length === 0) return [];
-
-  const min = Math.min(...pnls);
-  const max = Math.max(...pnls);
-  const range = max - min;
-  const bucketCount = Math.min(12, Math.max(5, Math.ceil(pnls.length / 3)));
-  const bucketSize = range / bucketCount || 1;
-
-  const buckets: PnlDistributionBucket[] = [];
-  for (let i = 0; i < bucketCount; i++) {
-    const low = min + i * bucketSize;
-    const high = low + bucketSize;
-    const count = pnls.filter((p) => p >= low && (i === bucketCount - 1 ? p <= high : p < high)).length;
-    buckets.push({
-      range: `${formatCurrency(low).replace("$", "")}`,
-      count,
-    });
-  }
-
-  return buckets;
+// ── Top symbols ─────────────────────────────────────────────
+export function topSymbols(trades: Trade[], limit = 5) {
+  const map: Record<string, number> = {};
+  trades.filter((t) => t.pnl != null).forEach((t) => {
+    map[t.ticker] = (map[t.ticker] || 0) + t.pnl!;
+  });
+  return Object.entries(map)
+    .map(([sym, pnl]) => ({ sym, pnl }))
+    .sort((a, b) => Math.abs(b.pnl) - Math.abs(a.pnl))
+    .slice(0, limit);
 }

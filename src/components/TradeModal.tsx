@@ -1,63 +1,54 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { supabase } from "@/lib/supabase";
 import { Trade, Tag } from "@/lib/types";
-import { calculatePnl } from "@/lib/utils";
+import { calcPnl } from "@/lib/utils";
 import { useTrades } from "@/lib/TradeContext";
 
-interface TradeModalProps {
+interface Props {
   trade?: Trade | null;
   onClose: () => void;
 }
 
-export default function TradeModal({ trade, onClose }: TradeModalProps) {
+export default function TradeModal({ trade, onClose }: Props) {
   const { refresh, tags: allTags } = useTrades();
-  const isEditing = !!trade;
+  const editing = !!trade;
 
-  const [tab, setTab] = useState<"general" | "journal">("general");
-  const [ticker, setTicker] = useState(trade?.ticker || "");
-  const [direction, setDirection] = useState<"long" | "short">(trade?.direction || "long");
-  const [entryPrice, setEntryPrice] = useState(trade?.entry_price?.toString() || "");
-  const [exitPrice, setExitPrice] = useState(trade?.exit_price?.toString() || "");
-  const [quantity, setQuantity] = useState(trade?.quantity?.toString() || "");
-  const [entryDate, setEntryDate] = useState(trade?.entry_date?.slice(0, 16) || new Date().toISOString().slice(0, 16));
-  const [exitDate, setExitDate] = useState(trade?.exit_date?.slice(0, 16) || "");
-  const [fees, setFees] = useState(trade?.fees?.toString() || "0.65");
-  const [notes, setNotes] = useState(trade?.notes || "");
-  const [selectedTags, setSelectedTags] = useState<string[]>(trade?.strategy_tags || []);
-  const [screenshots, setScreenshots] = useState<File[]>([]);
-  const [existingScreenshots, setExistingScreenshots] = useState<string[]>(trade?.screenshot_urls || []);
+  const [ticker, setTicker] = useState(trade?.ticker ?? "");
+  const [dir, setDir] = useState<"long" | "short">(trade?.direction ?? "long");
+  const [entryPrice, setEntryPrice] = useState(trade?.entry_price?.toString() ?? "");
+  const [exitPrice, setExitPrice] = useState(trade?.exit_price?.toString() ?? "");
+  const [qty, setQty] = useState(trade?.quantity?.toString() ?? "");
+  const [entryDate, setEntryDate] = useState(trade?.entry_date?.slice(0, 16) ?? new Date().toISOString().slice(0, 16));
+  const [exitDate, setExitDate] = useState(trade?.exit_date?.slice(0, 16) ?? "");
+  const [fees, setFees] = useState(trade?.fees?.toString() ?? "0");
+  const [notes, setNotes] = useState(trade?.notes ?? "");
+  const [tags, setTags] = useState<string[]>(trade?.strategy_tags ?? []);
+  const [shots, setShots] = useState<File[]>([]);
+  const [existingShots, setExistingShots] = useState<string[]>(trade?.screenshot_urls ?? []);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-  const [target, setTarget] = useState("");
-  const [stopLoss, setStopLoss] = useState("");
 
-  // Close on Escape
   useEffect(() => {
-    function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
-    }
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
   }, [onClose]);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setScreenshots((prev) => [...prev, ...acceptedFiles]);
-  }, []);
-
+  const onDrop = useCallback((f: File[]) => setShots((p) => [...p, ...f]), []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/*": [".png", ".jpg", ".jpeg", ".gif", ".webp"] },
+    accept: { "image/*": [".png", ".jpg", ".jpeg", ".webp"] },
   });
 
-  async function uploadScreenshots(): Promise<string[]> {
+  async function uploadShots(): Promise<string[]> {
     const urls: string[] = [];
-    for (const file of screenshots) {
-      const ext = file.name.split(".").pop();
+    for (const f of shots) {
+      const ext = f.name.split(".").pop();
       const path = `screenshots/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-      const { error } = await supabase.storage.from("trade-screenshots").upload(path, file);
+      const { error } = await supabase.storage.from("trade-screenshots").upload(path, f);
       if (error) throw error;
       const { data } = supabase.storage.from("trade-screenshots").getPublicUrl(path);
       urls.push(data.publicUrl);
@@ -69,47 +60,43 @@ export default function TradeModal({ trade, onClose }: TradeModalProps) {
     e.preventDefault();
     setError("");
     setSaving(true);
-
     try {
-      let screenshotUrls = [...existingScreenshots];
-      if (screenshots.length > 0) {
-        const newUrls = await uploadScreenshots();
-        screenshotUrls = [...screenshotUrls, ...newUrls];
-      }
+      let shotUrls = [...existingShots];
+      if (shots.length) shotUrls = [...shotUrls, ...(await uploadShots())];
 
-      const entry = parseFloat(entryPrice);
-      const exit = exitPrice ? parseFloat(exitPrice) : null;
-      const qty = parseFloat(quantity);
-      const fee = parseFloat(fees) || 0;
-      const pnl = exit !== null ? calculatePnl(direction, entry, exit, qty, fee) : null;
+      const ep = parseFloat(entryPrice);
+      const xp = exitPrice ? parseFloat(exitPrice) : null;
+      const q = parseFloat(qty);
+      const f = parseFloat(fees) || 0;
+      const pnl = xp != null ? calcPnl(dir, ep, xp, q, f) : null;
 
-      const tradeData = {
+      const data = {
         ticker: ticker.toUpperCase(),
-        direction,
-        entry_price: entry,
-        exit_price: exit,
-        quantity: qty,
+        direction: dir,
+        entry_price: ep,
+        exit_price: xp,
+        quantity: q,
         entry_date: entryDate,
         exit_date: exitDate || null,
         pnl,
-        fees: fee,
+        fees: f,
         notes,
-        strategy_tags: selectedTags,
-        screenshot_urls: screenshotUrls,
+        strategy_tags: tags,
+        screenshot_urls: shotUrls,
       };
 
-      if (isEditing) {
-        const { error } = await supabase.from("trades").update(tradeData).eq("id", trade.id);
+      if (editing) {
+        const { error } = await supabase.from("trades").update(data).eq("id", trade.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("trades").insert(tradeData);
+        const { error } = await supabase.from("trades").insert(data);
         if (error) throw error;
       }
 
       await refresh();
       onClose();
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Failed to save trade");
+      setError(err instanceof Error ? err.message : "Save failed");
     } finally {
       setSaving(false);
     }
@@ -122,349 +109,120 @@ export default function TradeModal({ trade, onClose }: TradeModalProps) {
     onClose();
   }
 
-  // Risk/reward calculation
-  const rrRatio = (() => {
-    const e = parseFloat(entryPrice);
-    const t = parseFloat(target);
-    const s = parseFloat(stopLoss);
-    if (!e || !s || !t || s === e) return null;
-    const reward = Math.abs(t - e);
-    const risk = Math.abs(e - s);
-    return risk > 0 ? (reward / risk).toFixed(2) : null;
-  })();
-
-  const inputClass =
-    "w-full px-3 py-2.5 bg-background border border-card-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-accent text-sm";
-  const labelClass = "block text-xs font-medium text-muted mb-1.5 uppercase tracking-wide";
+  const inp = "w-full px-3 py-2 bg-bg border border-border rounded-lg text-text text-sm font-mono focus:outline-none focus:ring-1 focus:ring-accent";
+  const lbl = "block text-[11px] font-semibold text-text-dim uppercase tracking-wider mb-1";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/60 modal-backdrop" onClick={onClose} />
-      <div className="relative w-full max-w-2xl bg-card border border-card-border rounded-2xl shadow-2xl modal-content max-h-[90vh] overflow-y-auto">
+      <div className="absolute inset-0 bg-black/70 anim-fade" onClick={onClose} />
+      <div className="relative w-full max-w-lg bg-bg-card border border-border rounded-xl shadow-2xl anim-slide-up max-h-[85vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-5 pb-4">
-          <h2 className="text-lg font-bold text-foreground">
-            {isEditing ? "Edit Trade" : "New Trade"}
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-lg hover:bg-background text-muted hover:text-foreground transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
+        <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-border">
+          <h2 className="text-base font-bold">{editing ? "Edit Trade" : "New Trade"}</h2>
+          <button onClick={onClose} className="p-1 rounded hover:bg-border/40 text-text-dim hover:text-text transition-colors">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
 
-        {/* Tabs */}
-        <div className="flex border-b border-card-border">
-          <button
-            onClick={() => setTab("general")}
-            className={`flex-1 py-3 text-sm font-medium text-center transition-colors ${
-              tab === "general"
-                ? "text-foreground border-b-2 border-accent"
-                : "text-muted hover:text-foreground"
-            }`}
-          >
-            General
-          </button>
-          <button
-            onClick={() => setTab("journal")}
-            className={`flex-1 py-3 text-sm font-medium text-center transition-colors ${
-              tab === "journal"
-                ? "text-foreground border-b-2 border-accent"
-                : "text-muted hover:text-foreground"
-            }`}
-          >
-            Journal
-          </button>
-        </div>
+        <form onSubmit={handleSubmit} className="p-5 space-y-4">
+          {error && <div className="px-3 py-2 rounded-lg bg-loss/10 border border-loss/30 text-loss text-sm">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
-          {error && (
-            <div className="bg-red/10 border border-red text-red px-4 py-3 rounded-lg text-sm">
-              {error}
+          {/* Symbol + Direction */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className={lbl}>Symbol</label>
+              <input type="text" value={ticker} onChange={(e) => setTicker(e.target.value)} className={inp} placeholder="AAPL" required />
+            </div>
+            <div>
+              <label className={lbl}>Direction</label>
+              <div className="flex gap-2">
+                <button type="button" onClick={() => setDir("long")}
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold transition-colors ${dir === "long" ? "bg-profit text-black" : "bg-border/40 text-text-dim"}`}>
+                  LONG
+                </button>
+                <button type="button" onClick={() => setDir("short")}
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold transition-colors ${dir === "short" ? "bg-loss text-white" : "bg-border/40 text-text-dim"}`}>
+                  SHORT
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Prices + Qty */}
+          <div className="grid grid-cols-3 gap-3">
+            <div><label className={lbl}>Entry Price</label><input type="number" step="any" value={entryPrice} onChange={(e) => setEntryPrice(e.target.value)} className={inp} placeholder="0.00" required /></div>
+            <div><label className={lbl}>Exit Price</label><input type="number" step="any" value={exitPrice} onChange={(e) => setExitPrice(e.target.value)} className={inp} placeholder="Optional" /></div>
+            <div><label className={lbl}>Quantity</label><input type="number" step="any" value={qty} onChange={(e) => setQty(e.target.value)} className={inp} placeholder="100" required /></div>
+          </div>
+
+          {/* Dates + Fees */}
+          <div className="grid grid-cols-3 gap-3">
+            <div><label className={lbl}>Entry Date</label><input type="datetime-local" value={entryDate} onChange={(e) => setEntryDate(e.target.value)} className={inp} required /></div>
+            <div><label className={lbl}>Exit Date</label><input type="datetime-local" value={exitDate} onChange={(e) => setExitDate(e.target.value)} className={inp} /></div>
+            <div><label className={lbl}>Fees</label><input type="number" step="any" value={fees} onChange={(e) => setFees(e.target.value)} className={inp} /></div>
+          </div>
+
+          {/* Tags */}
+          {allTags.length > 0 && (
+            <div>
+              <label className={lbl}>Tags</label>
+              <div className="flex flex-wrap gap-1.5">
+                {allTags.map((tag: Tag) => (
+                  <button key={tag.id} type="button"
+                    onClick={() => setTags((p) => p.includes(tag.name) ? p.filter((t) => t !== tag.name) : [...p, tag.name])}
+                    className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors border ${
+                      tags.includes(tag.name) ? "text-white border-transparent" : "border-border text-text-dim hover:text-text"
+                    }`}
+                    style={tags.includes(tag.name) ? { backgroundColor: tag.color } : undefined}>
+                    {tag.name}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 
-          {tab === "general" && (
-            <>
-              {/* Symbol + Direction */}
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <label className={labelClass}>Symbol</label>
-                  <input
-                    type="text"
-                    value={ticker}
-                    onChange={(e) => setTicker(e.target.value)}
-                    className={inputClass}
-                    placeholder="AAPL"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className={labelClass}>Target</label>
-                  <input
-                    type="number"
-                    step="any"
-                    value={target}
-                    onChange={(e) => setTarget(e.target.value)}
-                    className={inputClass}
-                    placeholder="0.00"
-                  />
-                </div>
-                <div>
-                  <label className={labelClass}>Stop-Loss</label>
-                  <div className="flex gap-2 items-center">
-                    <input
-                      type="number"
-                      step="any"
-                      value={stopLoss}
-                      onChange={(e) => setStopLoss(e.target.value)}
-                      className={`${inputClass} flex-1`}
-                      placeholder="0.00"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setDirection(direction === "long" ? "short" : "long")}
-                      className={`px-4 py-2.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
-                        direction === "long"
-                          ? "bg-green text-white"
-                          : "bg-red text-white"
-                      }`}
-                    >
-                      {direction.toUpperCase()}
-                    </button>
+          {/* Notes */}
+          <div>
+            <label className={lbl}>Notes</label>
+            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} className={inp} placeholder="Trade rationale..." />
+          </div>
+
+          {/* Screenshots */}
+          <div>
+            <label className={lbl}>Screenshots</label>
+            <div {...getRootProps()} className={`border border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors text-xs ${isDragActive ? "border-accent bg-accent/5 text-accent" : "border-border text-text-dim hover:border-accent/50"}`}>
+              <input {...getInputProps()} />
+              {isDragActive ? "Drop here..." : "Drag & drop or click to add screenshots"}
+            </div>
+            {(existingShots.length > 0 || shots.length > 0) && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {existingShots.map((u) => (
+                  <div key={u} className="relative group">
+                    <img src={u} alt="" className="w-16 h-16 object-cover rounded border border-border" />
+                    <button type="button" onClick={() => setExistingShots((p) => p.filter((x) => x !== u))}
+                      className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-loss text-white rounded-full text-[9px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">x</button>
                   </div>
-                </div>
-              </div>
-
-              {rrRatio && (
-                <div className="inline-block px-3 py-1.5 bg-cyan/10 border border-cyan/30 rounded-lg text-xs text-cyan font-medium">
-                  Risk/Reward Ratio: {rrRatio}
-                </div>
-              )}
-
-              {/* Execution row */}
-              <div className="bg-background/50 border border-card-border rounded-lg p-4">
-                <div className="grid grid-cols-5 gap-3 text-xs font-medium text-muted uppercase tracking-wide mb-3">
-                  <span>Action</span>
-                  <span>Date / Time</span>
-                  <span>Quantity</span>
-                  <span>Price</span>
-                  <span>Fee</span>
-                </div>
-                <div className="grid grid-cols-5 gap-3 items-center">
-                  <span className={`px-3 py-2 rounded-lg text-xs font-bold text-center text-white ${
-                    direction === "long" ? "bg-green" : "bg-red"
-                  }`}>
-                    {direction === "long" ? "BUY" : "SELL"}
-                  </span>
-                  <input
-                    type="datetime-local"
-                    value={entryDate}
-                    onChange={(e) => setEntryDate(e.target.value)}
-                    className={inputClass}
-                    required
-                  />
-                  <input
-                    type="number"
-                    step="any"
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
-                    className={inputClass}
-                    placeholder="100"
-                    required
-                  />
-                  <input
-                    type="number"
-                    step="any"
-                    value={entryPrice}
-                    onChange={(e) => setEntryPrice(e.target.value)}
-                    className={inputClass}
-                    placeholder="0.00"
-                    required
-                  />
-                  <input
-                    type="number"
-                    step="any"
-                    value={fees}
-                    onChange={(e) => setFees(e.target.value)}
-                    className={inputClass}
-                    placeholder="0.65"
-                  />
-                </div>
-
-                {/* Exit row (if editing or has exit) */}
-                {(isEditing || exitPrice) && (
-                  <div className="grid grid-cols-5 gap-3 items-center mt-3">
-                    <span className={`px-3 py-2 rounded-lg text-xs font-bold text-center text-white ${
-                      direction === "long" ? "bg-red" : "bg-green"
-                    }`}>
-                      {direction === "long" ? "SELL" : "BUY"}
-                    </span>
-                    <input
-                      type="datetime-local"
-                      value={exitDate}
-                      onChange={(e) => setExitDate(e.target.value)}
-                      className={inputClass}
-                    />
-                    <input type="text" value={quantity} disabled className={`${inputClass} opacity-50`} />
-                    <input
-                      type="number"
-                      step="any"
-                      value={exitPrice}
-                      onChange={(e) => setExitPrice(e.target.value)}
-                      className={inputClass}
-                      placeholder="Exit price"
-                    />
-                    <input type="text" value="" disabled className={`${inputClass} opacity-50`} />
+                ))}
+                {shots.map((f, i) => (
+                  <div key={i} className="relative group">
+                    <img src={URL.createObjectURL(f)} alt="" className="w-16 h-16 object-cover rounded border border-border" />
+                    <button type="button" onClick={() => setShots((p) => p.filter((_, j) => j !== i))}
+                      className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-loss text-white rounded-full text-[9px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">x</button>
                   </div>
-                )}
-
-                {/* Add exit row button */}
-                {!exitPrice && !isEditing && (
-                  <button
-                    type="button"
-                    onClick={() => setExitPrice("")}
-                    className="mt-3 mx-auto flex items-center justify-center w-8 h-8 rounded-full bg-accent text-white hover:bg-accent-hover transition-colors"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                  </button>
-                )}
+                ))}
               </div>
-            </>
-          )}
+            )}
+          </div>
 
-          {tab === "journal" && (
-            <>
-              {/* Notes */}
-              <div>
-                <label className={labelClass}>Notes</label>
-                <textarea
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  rows={5}
-                  className={inputClass}
-                  placeholder="Trade rationale, market conditions, lessons learned..."
-                />
-              </div>
-
-              {/* Tags */}
-              <div>
-                <label className={labelClass}>Tags</label>
-                <div className="flex flex-wrap gap-2">
-                  {allTags.map((tag: Tag) => (
-                    <button
-                      key={tag.id}
-                      type="button"
-                      onClick={() =>
-                        setSelectedTags((prev) =>
-                          prev.includes(tag.name)
-                            ? prev.filter((t) => t !== tag.name)
-                            : [...prev, tag.name]
-                        )
-                      }
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors border ${
-                        selectedTags.includes(tag.name)
-                          ? "text-white border-transparent"
-                          : "border-card-border text-muted hover:text-foreground"
-                      }`}
-                      style={
-                        selectedTags.includes(tag.name) ? { backgroundColor: tag.color } : undefined
-                      }
-                    >
-                      {tag.name}
-                    </button>
-                  ))}
-                  {allTags.length === 0 && (
-                    <span className="text-xs text-muted">No tags yet. Create tags from the Trades page.</span>
-                  )}
-                </div>
-              </div>
-
-              {/* Screenshots */}
-              <div>
-                <label className={labelClass}>Screenshots</label>
-                <div
-                  {...getRootProps()}
-                  className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
-                    isDragActive
-                      ? "border-accent bg-accent/5"
-                      : "border-card-border hover:border-accent"
-                  }`}
-                >
-                  <input {...getInputProps()} />
-                  <p className="text-sm text-muted">
-                    {isDragActive
-                      ? "Drop images here..."
-                      : "Drag & drop chart screenshots, or click to select"}
-                  </p>
-                </div>
-                {(existingScreenshots.length > 0 || screenshots.length > 0) && (
-                  <div className="flex flex-wrap gap-3 mt-3">
-                    {existingScreenshots.map((url) => (
-                      <div key={url} className="relative group">
-                        <img
-                          src={url}
-                          alt="Screenshot"
-                          className="w-20 h-20 object-cover rounded-lg border border-card-border"
-                        />
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setExistingScreenshots((prev) => prev.filter((u) => u !== url))
-                          }
-                          className="absolute -top-2 -right-2 w-5 h-5 bg-red text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          x
-                        </button>
-                      </div>
-                    ))}
-                    {screenshots.map((file, i) => (
-                      <div key={i} className="relative group">
-                        <img
-                          src={URL.createObjectURL(file)}
-                          alt="New screenshot"
-                          className="w-20 h-20 object-cover rounded-lg border border-card-border"
-                        />
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setScreenshots((prev) => prev.filter((_, idx) => idx !== i))
-                          }
-                          className="absolute -top-2 -right-2 w-5 h-5 bg-red text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          x
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-
-          {/* Footer buttons */}
+          {/* Footer */}
           <div className="flex items-center justify-between pt-2">
-            {isEditing ? (
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="px-5 py-2.5 bg-red/10 hover:bg-red/20 text-red rounded-lg text-sm font-medium transition-colors"
-              >
+            {editing ? (
+              <button type="button" onClick={handleDelete} className="px-4 py-2 bg-loss/10 hover:bg-loss/20 text-loss rounded-lg text-sm font-medium transition-colors">
                 Delete
               </button>
-            ) : (
-              <div />
-            )}
-            <button
-              type="submit"
-              disabled={saving}
-              className="px-8 py-2.5 bg-accent hover:bg-accent-hover text-white rounded-lg text-sm font-semibold transition-colors disabled:opacity-50"
-            >
+            ) : <div />}
+            <button type="submit" disabled={saving}
+              className="px-6 py-2 bg-accent hover:bg-accent-hover text-white rounded-lg text-sm font-semibold transition-colors disabled:opacity-50">
               {saving ? "Saving..." : "Save"}
             </button>
           </div>
